@@ -1,0 +1,28 @@
+#
+# Macro file for the initialization phase of "TestEm1.cc"
+#
+# Sets some default verbose
+# and initializes the graphic.
+#
+
+#/control/verbose 2
+#/tracking/verbose 1
+#/run/verbose 2
+#/event/verbose 1
+#/process/verbose 2
+#/process/setVerbose 2 photonNuclear
+
+#PHYSICS
+#/Physics/addPhysics QGSP_BIC_EMY
+#/Physics/addPhysics QGSP_BERT
+/run/initialize
+#/process/inactivate compt
+#/process/inactivate phot
+#/process/inactivate conv
+#/process/inactivate annihil
+
+##  main beam
+#shoot
+/run/beamOn 1000000
+#/run/beamOn 830000000
+## G4ElementCrossSection <--

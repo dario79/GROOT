@@ -1,0 +1,112 @@
+# INIT
+/control/verbose 2
+/run/verbose 2
+#/tracking/verbose 1
+#
+#/testhadr/det/setMat G4_Mg
+#/testhadr/det/setIsotopeMat Mg24 12 24 1.737 g/cm3
+#/testhadr/det/setSize 100000 m 
+#
+/run/initialize
+
+# GRAPHICS
+/vis/open OGL 900x900-0+0
+#/vis/open HepRepFile
+#/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+/vis/drawVolume
+
+/vis/geometry/set/visibility ChamberLogic 0 0
+/vis/geometry/set/visibility ChamberLogic1 0 0
+/vis/geometry/set/visibility ChamberLogic2 0 0
+
+#/vis/geometry/set/visibility MagnesiumLayerLogic 0 0
+#/vis/geometry/set/visibility CarbonLayerLogic 0 0
+
+/testhadr/DrawTracks all
+#/testhadr/event/drawTracks all
+/tracking/storeTrajectory 3
+/vis/scene/add/trajectories smooth
+
+/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/set 2 green
+#/vis/modeling/trajectories/drawByCharge-0/set 1 blue
+#/vis/modeling/trajectories/drawByCharge-0/set -1 red
+#/vis/modeling/trajectories/drawByCharge-0/set 0 white
+/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 1
+
+#/vis/modeling/trajectories/create/drawByParticleID
+#/vis/modeling/trajectories/drawByParticleID-0/set alpha red
+#/vis/modeling/trajectories/drawByParticleID-0/set gamma white
+#/vis/modeling/trajectories/drawByParticleID-0/set proton blue
+#/vis/modeling/trajectories/drawByParticleID-0/set e- cyan
+#/vis/modeling/trajectories/drawByParticleID-0/set e+ cyan
+#/vis/modeling/trajectories/drawByParticleID-0/set neutron gray
+
+
+#Create a drawByAttribute model named drawByAttribute-0
+#/vis/modeling/trajectories/create/drawByAttribute
+#Configure drawByAttribute-0 model
+#/vis/modeling/trajectories/drawByAttribute-0/verbose true
+#Select attribute "CPN"
+#/vis/modeling/trajectories/drawByAttribute-0/setAttribute CPN
+#Configure single value data 
+#/vis/modeling/trajectories/drawByAttribute-0/addValue pn_key  photonNuclear
+
+# To draw only gammas:
+#/vis/filtering/trajectories/create/particleFilter
+#/vis/filtering/trajectories/particleFilter-0/add gamma
+#
+# To invert the above, drawing all particles except gammas,
+# keep the above two lines but also add:
+#/vis/filtering/trajectories/particleFilter-0/invert true
+
+
+/vis/scene/endOfEventAction accumulate 10000
+#/vis/scene/endOfRunAction accumulate
+/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
+/vis/viewer/set/viewpointThetaPhi 70 130
+
+# BEAM SET
+/testhadr/event/printModulo 100000
+##  main beam
+## 11 MeV lungo l'asse z positivo
+#/gps/verbose 2
+#/gps/source/intensity 1.0
+/gps/direction 0. 0. 1.
+/gps/particle gamma
+/gps/pos/type Beam
+/gps/pos/shape Circle
+/gps/pos/centre 0. 0. -10. cm
+/gps/pos/radius 0.02 mm 
+#/gps/pos/rot1 0 0 1
+#/gps/pos/rot2 1 1 0
+## /gps/ang/type iso
+#/gps/ang/type focused
+#/gps/ang/focuspoint 0. 0. 0.
+## spot size 15-30 um
+
+## divergence 25-200 urad
+#/gps/ang/sigma_r 0.0002 rad
+/gps/ene/type Gauss
+# ENERGY
+/gps/ene/mono 30.0 MeV
+/gps/ene/sigma 0.015
+## /gps/polarization 0. 0. 1.
+
+#/gun/position 0. 0. 0.1 m
+#/gun/direction 0. 0. 1.
+#/gun/particle gamma
+#/gun/energy 30 MeV
+
+# ANALYSIS
+
+# SHOOT!
+#/vis/disable
+/run/beamOn 10000
+#/vis/enable
+#/vis/reviewKeptEvents
+#/vis/viewer/flush
+

@@ -1,0 +1,101 @@
+#
+# Macro file for the initialization phase of "TestEm1.cc"
+#
+# Sets some default verbose
+# and initializes the graphic.
+#
+
+/control/verbose 1
+#/tracking/verbose 1
+/run/verbose 1
+#/event/verbose 1
+#/process/verbose 2
+#/process/setVerbose 2 photonNuclear
+
+#PHYSICS
+#/Physics/addPhysics QGSP_BIC_EMY
+#/Physics/addPhysics QGSP_BERT
+/run/initialize
+#/process/inactivate compt
+#/process/inactivate phot
+#/process/inactivate conv
+#/process/inactivate annihil
+
+##  main beam
+## 11.4 MeV lungo l'asse z positivo
+#/gps/verbose 2
+/gps/source/intensity 1.0
+/gps/direction 0. 0. 1.
+/gps/particle gamma
+/gps/pos/type Beam
+/gps/pos/shape Circle
+/gps/pos/centre 0. 0. -50. cm
+/gps/pos/radius 0.02 mm 
+#/gps/pos/rot1 0 0 1
+#/gps/pos/rot2 1 1 0
+## /gps/ang/type iso
+#/gps/ang/type focused
+#/gps/ang/focuspoint 0. 0. 0.
+## spot size 15-30 um
+
+## divergence 25-200 urad
+#/gps/ang/sigma_r 0.0002 rad
+/gps/ene/type Gauss
+# ENERGY  
+/gps/ene/mono 11.40 MeV
+/gps/ene/sigma 0.015
+## /gps/polarization 0. 0. 1.
+
+# 16.45 MeV threshold found for 24Mg(gamma,alpha)20Ne
+#ALFA FOUND @ 16 MeV in CARBON and in heavier elements (ChamberPhys)  now alpha from C->3a down to 7.4 MeV
+
+/analysis/setFileName gamma
+/analysis/h1/set 0  1  -1. 1 none	#dummy
+/analysis/h1/set 1  100  -100. 100. keV	#Q
+/analysis/h1/set 2  100  -10. 10. MeV	#Pbalance
+/analysis/h1/set 3  100  0. 12. MeV	#primary scatt en
+/analysis/h1/set 4  100  -100. 100 keV	#recoil ion
+/analysis/h1/set 5  100  0. 12. MeV	#gamma en
+/analysis/h1/set 6  100  0. 12. MeV	#neutrons en
+/analysis/h1/set 7  100  0. 12. MeV	#prot en
+/analysis/h1/set 8  100  0. 12. MeV	#deut en
+/analysis/h1/set 9  100  0. 12. MeV	#alpha en
+/analysis/h1/set 10  100  0. 12. MeV	#ions en
+/analysis/h1/set 11  100  0. 12. MeV	#mesons en
+/analysis/h1/set 12  100  0. 12. MeV	#baryons en
+/analysis/h1/set 13  100  -1. 1. none	#primary scatt px
+/analysis/h1/set 14  100  -1. 1. none	#recoil ion px
+/analysis/h1/set 15  100  -1. 1. none	#gamma px
+/analysis/h1/set 16  100  -1. 1. none	#neutrons px
+/analysis/h1/set 17  100  -1. 1. none	#prot px
+/analysis/h1/set 18  100  -1. 1. none	#ions px
+/analysis/h1/set 19  100  -1. 1. none	#alpha px
+/analysis/h1/set 20  100  -1. 1. none
+/analysis/h1/set 21  100  -1. 1. none
+/analysis/h1/set 22  100  -1. 1. none
+/analysis/h1/set 23  100  -1. 1. none	#primary scatt py
+/analysis/h1/set 24  100  -1. 1. none	#recoil ion py
+/analysis/h1/set 25  100  -1. 1. none	#gamma py
+/analysis/h1/set 26  100  -1. 1. none	#neutrons py
+/analysis/h1/set 27  100  -1. 1. none	#prot py
+/analysis/h1/set 28  100  -1. 1. none	#ions py
+/analysis/h1/set 29  100  -1. 1. none	#alpha py
+/analysis/h1/set 30  100  -1. 1. none	
+/analysis/h1/set 31  100  -1. 1. none	
+/analysis/h1/set 32  100  -1. 1. none	
+/analysis/h1/set 33  100  -1. 1. none	#primary scatt pz
+/analysis/h1/set 34  100  -1. 1. none	#recoil ion px
+/analysis/h1/set 35  100  -1. 1. none	#gamma pz
+/analysis/h1/set 36  100  -1. 1. none	#neutrons pz
+/analysis/h1/set 37  100  -1. 1. none	#prot pz
+/analysis/h1/set 38  100  -1. 1. none	#ions pz
+/analysis/h1/set 39  100  -1. 1. none	#alpha pz
+/analysis/h1/set 40  100  -1. 1. none	
+/analysis/h1/set 41  100  -1. 1. none	
+/analysis/h1/set 42  100  -1. 1. none	
+
+
+#shoot
+/run/beamOn 100000000
+#/run/beamOn 830000000
+## G4ElementCrossSection <--

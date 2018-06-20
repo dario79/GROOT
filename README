@@ -1,0 +1,15 @@
+$Id: README Dario $
+
+  
+download and compile cadmesh
+
+
+add in CMakeLists.txt
+# CADMesh
+find_package(cadmesh)
+include_directories(${CADMESH_INCLUDE_DIRS})
+
+cmake ../ -Dcadmesh_DIR:PATH=path_to_cadmesh  ( probably /usr/local )
+
+
+make

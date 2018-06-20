@@ -1,0 +1,163 @@
+#
+# Macro file for the initialization phase of "TestEm1.cc"
+#
+# Sets some default verbose
+# and initializes the graphic.
+### /control/execute  gps3.mac
+
+/control/verbose 2
+/tracking/verbose 2
+/run/verbose 2
+/event/verbose 2
+
+#PHYSICS
+#/Physics/addPhysics QGSP_BIC_EMY
+#/Physics/addPhysics QGSP_BERT
+/run/initialize
+/process/inactivate compt
+/process/inactivate phot
+/process/inactivate conv
+#/process/inactivate annihil
+
+##  main beam
+## 11 MeV lungo l'asse z positivo
+#/gps/verbose 2
+/gps/source/intensity 1.0
+/gps/direction 0. 0. 1.
+/gps/particle gamma
+/gps/pos/type Beam
+/gps/pos/shape Circle
+/gps/pos/centre 0. 0. -10. cm
+/gps/pos/radius 0.02 mm 
+#/gps/pos/rot1 0 0 1
+#/gps/pos/rot2 1 1 0
+## /gps/ang/type iso
+#/gps/ang/type focused
+#/gps/ang/focuspoint 0. 0. 0.
+## spot size 15-30 um
+
+## divergence 25-200 urad
+#/gps/ang/sigma_r 0.0002 rad
+/gps/ene/type Gauss
+# ENERGY 16.45 MeV
+/gps/ene/mono 11 MeV
+/gps/ene/sigma 0.015
+## /gps/polarization 0. 0. 1.
+
+
+######################### V I S U A L I Z A T I O N ######################
+#/vis/open OGL 900x900-0+0
+/vis/open OGL 1920x1080-0+0
+/vis/viewer/set/background white ! ! 0.
+#/vis/open HepRepFile
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+/vis/drawVolume
+
+
+#/vis/geometry/set/visibility ChamberLogic 0 0
+#/vis/geometry/set/visibility ChamberLogic1 0 0
+#/vis/geometry/set/visibility ChamberLogic2 0 0
+
+#/vis/geometry/set/visibility MagnesiumLayerLogic 0 0
+#/vis/geometry/set/visibility CarbonLayerLogic 0 0
+
+/testhadr/DrawTracks all
+#/testhadr/event/drawTracks all
+#/tracking/storeTrajectory 3
+/vis/scene/add/trajectories rich smooth
+
+#/vis/modeling/trajectories/create/drawByCharge
+#/vis/modeling/trajectories/drawByCharge-0/set 2 green
+#/vis/modeling/trajectories/drawByCharge-0/set 1 blue
+#/vis/modeling/trajectories/drawByCharge-0/set -1 red
+#/vis/modeling/trajectories/drawByCharge-0/set 0 white
+#/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+#/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 1
+
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/setDefault blue
+/vis/modeling/trajectories/drawByParticleID-0/set alpha red
+/vis/modeling/trajectories/drawByParticleID-0/set gamma black
+/vis/modeling/trajectories/drawByParticleID-0/set proton red
+/vis/modeling/trajectories/drawByParticleID-0/set e- grey
+/vis/modeling/trajectories/drawByParticleID-0/set e+ grey
+/vis/modeling/trajectories/drawByParticleID-0/set neutron cyan
+
+
+#Create a drawByAttribute model named drawByAttribute-0
+#/vis/modeling/trajectories/create/drawByAttribute
+#Configure drawByAttribute-0 model
+#/vis/modeling/trajectories/drawByAttribute-0/verbose true
+#Select attribute "CPN"
+#/vis/modeling/trajectories/drawByAttribute-0/setAttribute CPN
+#Configure single value data 
+#/vis/modeling/trajectories/drawByAttribute-0/addValue pn_key  photonNuclear
+
+# To draw only gammas:
+#/vis/filtering/trajectories/create/particleFilter
+#/vis/filtering/trajectories/particleFilter-0/add gamma
+#
+# To invert the above, drawing all particles except gammas,
+# keep the above two lines but also add:
+#/vis/filtering/trajectories/particleFilter-0/invert true
+
+#endOfRunAction ?
+#/vis/scene/endOfEventAction refresh
+#/vis/scene/endOfEventAction accumulate
+#/vis/viewer/set/autoRefresh true
+/vis/verbose warnings
+/vis/viewer/set/viewpointThetaPhi 70 130
+############################################################################
+
+/analysis/setFileName gamma
+/analysis/h1/set 0  1  -1. 1 none	#dummy
+/analysis/h1/set 1  100  -100. 100. keV	#Q
+/analysis/h1/set 2  100  -10. 10. MeV	#Pbalance
+/analysis/h1/set 3  100  -10. 10 MeV	#primary scatt en
+/analysis/h1/set 4  100  -100. 100 keV	#recoil ion
+/analysis/h1/set 5  100  0. 30. MeV	#gamma en
+/analysis/h1/set 6  100  0. 30. MeV	#neutrons en
+/analysis/h1/set 7  100  0. 30. MeV	#prot en
+/analysis/h1/set 8  100  0. 30. MeV	#deut en
+/analysis/h1/set 9  100  0. 30. MeV	#alpha en
+/analysis/h1/set 10  100  0. 30. MeV	#ions en
+/analysis/h1/set 11  100  0. 30. MeV	#mesons en
+/analysis/h1/set 12  100  0. 30. MeV	#baryons en
+/analysis/h1/set 13  100  -1. 1. none	#primary scatt px
+/analysis/h1/set 14  100  -1. 1. none	#recoil ion px
+/analysis/h1/set 15  100  -1. 1. none	#gamma px
+/analysis/h1/set 16  100  -1. 1. none	#neutrons px
+/analysis/h1/set 17  100  -1. 1. none	#prot px
+/analysis/h1/set 18  100  -1. 1. none	#ions px
+/analysis/h1/set 19  100  -1. 1. none	#alpha px
+/analysis/h1/set 20  100  -1. 1. none
+/analysis/h1/set 21  100  -1. 1. none
+/analysis/h1/set 22  100  -1. 1. none
+/analysis/h1/set 23  100  -1. 1. none	#primary scatt py
+/analysis/h1/set 24  100  -1. 1. none	#recoil ion py
+/analysis/h1/set 25  100  -1. 1. none	#gamma py
+/analysis/h1/set 26  100  -1. 1. none	#neutrons py
+/analysis/h1/set 27  100  -1. 1. none	#prot py
+/analysis/h1/set 28  100  -1. 1. none	#ions py
+/analysis/h1/set 29  100  -1. 1. none	#alpha py
+/analysis/h1/set 30  100  -1. 1. none	
+/analysis/h1/set 31  100  -1. 1. none	
+/analysis/h1/set 32  100  -1. 1. none	
+/analysis/h1/set 33  100  -1. 1. none	#primary scatt pz
+/analysis/h1/set 34  100  -1. 1. none	#recoil ion px
+/analysis/h1/set 35  100  -1. 1. none	#gamma pz
+/analysis/h1/set 36  100  -1. 1. none	#neutrons pz
+/analysis/h1/set 37  100  -1. 1. none	#prot pz
+/analysis/h1/set 38  100  -1. 1. none	#ions pz
+/analysis/h1/set 39  100  -1. 1. none	#alpha pz
+/analysis/h1/set 40  100  -1. 1. none	
+/analysis/h1/set 41  100  -1. 1. none	
+/analysis/h1/set 42  100  -1. 1. none	
+
+#shoot
+#/run/beamOn 100
+#/run/beamOn 830000000
+## G4ElementCrossSection <--
+
+
