@@ -33,7 +33,6 @@
 
 #include "GammaPhysics.hh"
 #include "G4BinaryCascade.hh"
-
 #include "G4ParticleDefinition.hh"
 #include "G4ProcessManager.hh"
 
@@ -59,29 +58,14 @@ GammaPhysics::~GammaPhysics()
 
 void GammaPhysics::ConstructProcess()
 {
-  G4ProcessManager* pManager = G4Gamma::Gamma()->GetProcessManager();
-   //
+    G4ProcessManager* pManager = G4Gamma::Gamma()->GetProcessManager();
     G4PhotoNuclearProcess* process = new G4PhotoNuclearProcess();
-//    process->BiasCrossSectionByFactor(1000000);
-   //
-/*   G4CascadeInterface* bertini = new G4CascadeInterface();
-   bertini->SetMaxEnergy(10*GeV);
-   process->RegisterMe(bertini);
-*/   //
-   G4CascadeInterface* theCascade = new G4CascadeInterface();
-   theCascade->usePreCompoundDeexcitation();
-   process->RegisterMe(theCascade);
 
-   pManager->AddDiscreteProcess(process);
+    G4CascadeInterface* theCascade = new G4CascadeInterface();
+    theCascade->usePreCompoundDeexcitation();
+    process->RegisterMe(theCascade);
 
-/*
-    G4PhotoNuclearProcess* inelProcess = new G4PhotoNuclearProcess();
-    G4BinaryCascade* bcModel = new G4BinaryCascade();
-//    This model may be registered to the inelastic process corresponding to any of the particles listed below, for example the pi+:
-//    G4HadronInelasticProcess* inelProcess = new G4HadronInelasticProcess("photonNuclear", G4Gamma::Gamma());
-    inelProcess->RegisterMe(bcModel);
-    pManager->AddDiscreteProcess(inelProcess);
-*/
+    pManager->AddDiscreteProcess(process);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

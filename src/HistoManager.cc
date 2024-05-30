@@ -39,37 +39,34 @@
 HistoManager::HistoManager()
   : fFileName("Hadr03")
 {
-  Book();
+    Book();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 HistoManager::~HistoManager()
 {
-  //  delete G4AnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void HistoManager::Book()
 {
-  // Create or get analysis manager
-  // The choice of analysis technology is done via selection of a namespace
-  // in HistoManager.hh
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->SetFileName(fFileName);
-  analysisManager->SetVerboseLevel(1);
-  analysisManager->SetActivation(true);     //enable inactivation of histograms
-  
-  // Define histograms start values
-//  const G4int kMaxHisto = 13;
-  const G4int kMaxHisto = 43;  
-  const G4String id[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+// Create or get analysis manager
+// The choice of analysis technology is done via selection of a namespace
+// in HistoManager.hh
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    analysisManager->SetFileName(fFileName);
+    analysisManager->SetVerboseLevel(1);
+    analysisManager->SetActivation(true);     //enable inactivation of histograms
+
+    const G4int kMaxHisto = 43;
+    const G4String id[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                          "10","11","12","13","14","15","16","17","18","19",
-                         "20","21","22","23","24","25","26","27","28","29",  
+                         "20","21","22","23","24","25","26","27","28","29",
                          "30","31","32","33","34","35","36","37","38","39",
                          "40","41","42"};
-  const G4String title[] = 
+    const G4String title[] =
                 { "dummy",                                              //0
                   "Q = Ekin out - Ekin in",                            	//1
                   "Pbalance = mag(P_out - P_in)",              		//2
@@ -113,24 +110,20 @@ void HistoManager::Book()
                   "Z momentum of all others ions",              	//40
                   "Z momentum of all others mesons",            	//41
                   "Z momentum of all others baryons",           	//42
-                 };    
-  // Default values (to be reset via /analysis/h1/set command)               
-  G4int nbins = 100;
-  G4double vmin = 0.;
-  G4double vmax = 100.;
+                 };
+    // Default values (to be reset via /analysis/h1/set command)
 
-  // Create all histograms as inactivated 
-  // as we have not yet set nbins, vmin, vmax
-  for (G4int k=0; k<kMaxHisto; k++) {
-    G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
-//    G4int ih1 = analysisManager->CreateH1(id[k]+100, title1[k], nbins, vmin, vmax);
-//    G4int ih2 = analysisManager->CreateH1(id[k]+200, title2[k], nbins, vmin, vmax);
-//    G4int ih3 = analysisManager->CreateH1(id[k]+300, title3[k], nbins, vmin, vmax);
-    analysisManager->SetH1Activation(ih, false);
-//    analysisManager->SetH1Activation(ih1, false);
-//    analysisManager->SetH1Activation(ih2, false);
-//    analysisManager->SetH1Activation(ih3, false);
-  }
+    G4int nbins = 100;
+    G4double vmin = 0.;
+    G4double vmax = 100.;
+
+    // Create all histograms as inactivated
+    // as we have not yet set nbins, vmin, vmax
+    for (G4int k=0; k<kMaxHisto; k++)
+    {
+        G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
+        analysisManager->SetH1Activation(ih, false);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -54,10 +54,10 @@ class EventActionMessenger: public G4UImessenger
     
   private:
     EventAction*          fEventAction;
+    G4UIdirectory*        fEventDir;
+    G4UIcmdWithAnInteger* fPrintCmd;
+    G4UIcmdWithAString*   fDrawCmd;
 
-    G4UIcmdWithAString*    fDrawCmd;
-    G4UIdirectory*        fEventDir;   
-    G4UIcmdWithAnInteger* fPrintCmd;    
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

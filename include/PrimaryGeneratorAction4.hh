@@ -23,61 +23,57 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file hadronic/Hadr03/include/EventAction.hh
-/// \brief Definition of the EventAction class
+/// \file eventgenerator/particleGun/include/PrimaryGeneratorAction4.hh
+/// \brief Definition of the PrimaryGeneratorAction4 class
 //
-// $Id: EventAction.hh 66241 2012-12-13 18:34:42Z gunter $
+//
+// $Id: PrimaryGeneratorAction4.hh 67332 2013-02-14 17:12:13Z ihrivnac $
 // 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef EventAction_h
-#define EventAction_h 1
+#ifndef PrimaryGeneratorAction4_h
+#define PrimaryGeneratorAction4_h 1
 
-#include "G4UserEventAction.hh"
-#include "G4Accumulable.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
 #include "globals.hh"
-#include "G4ThreeVector.hh"
-#include <vector>
 
-class EventActionMessenger;
+#include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4ParticleGun.hh"
+//#include "G4GeneralParticleSource.hh"
+
+#include "TGenPhaseSpace.h"
+#include "TRandom3.h"
+#include "TROOT.h"
+#include <random>
+
+
+class G4GeneralParticleSource;
+class G4SingleParticleSource;
+class PrimaryGeneratorAction;
+class DetectorConstruction;
+
+
+class G4ParticleGun;
+class G4Event;
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class EventAction : public G4UserEventAction
+class PrimaryGeneratorAction4
 {
   public:
-    EventAction();
-   ~EventAction();
+    PrimaryGeneratorAction4(G4ParticleGun*);    
+   ~PrimaryGeneratorAction4();
 
   public:
-    virtual void BeginOfEventAction(const G4Event*);
-    virtual void EndOfEventAction(const G4Event*);
-    
-    void SetPrintModulo(G4int val) {fPrintModulo = val;};
-    void SetDrawFlag(G4String val) {fDrawFlag = val;};
-    void AddEdep(G4double, G4ThreeVector, G4String, G4String, G4String, G4int, G4int);
+    void GeneratePrimaries(G4Event*, G4double, G4double, G4String, G4String, DetectorConstruction*);
 
   private:
-    G4int                 fPrintModulo;                    
-    EventActionMessenger* fEventMessenger;
-    G4String               fDrawFlag;
-    G4double theta,phi;//,e_rec;
-    G4String outputType;
-    std::vector <G4int> Type;
-    std::vector <G4double> Energy;
-    std::vector <G4double> Theta;
-    std::vector <G4double> Phi;
-    std::vector <G4String> PName;
-    std::vector <G4String> VName;
-    std::vector <G4String> deleteS;
-    std::vector <G4int> deleteI;
-    std::vector <G4double> deleteD;
-    std::vector <G4int> ID;
+
+    G4ParticleGun*  fParticleGun;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    

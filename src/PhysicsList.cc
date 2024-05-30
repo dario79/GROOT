@@ -1,4 +1,3 @@
-//
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
@@ -40,14 +39,13 @@
 //#include "G4HadronPhysicsFTFP_BERT_HP.hh"
 //#include "G4HadronPhysicsINCLXX.hh"
 #include "G4IonPhysics.hh"
-// #include "G4IonINCLXXPhysics.hh"
+//#include "G4IonINCLXXPhysics.hh"
 //#include "GammaPhysics.hh"
 #include "G4HadronPhysicsQGSP_BERT_HP.hh"
-//#include "G4EmStandardPhysics_option3.hh"
-#include "G4EmStandardPhysics_option4.hh"
-//#include "G4HadronPhysicsQGSP_BIC_HP.hh"
-//#include "G4HadronPhysicsFTFP_BERT.hh"
-//#include "G4HadronPhysicsQGSP_BERT.hh"
+#include "G4EmStandardPhysics_option3.hh"
+//#include "G4EmStandardPhysics_option4.hh"
+#include "G4RadioactiveDecayPhysics.hh"
+
 // particles
 
 #include "G4BosonConstructor.hh"
@@ -63,37 +61,36 @@
 PhysicsList::PhysicsList()
 :G4VModularPhysicsList()
 {
-  G4int verb = 1;  
-  SetVerboseLevel(verb);
-  
-  //add new units for cross sections
-  // 
-  new G4UnitDefinition( "mm2/g",  "mm2/g", "Surface/Mass", mm2/g);
-  new G4UnitDefinition( "um2/mg", "um2/mg","Surface/Mass", um*um/mg);  
+    G4int verb = 1;
+    SetVerboseLevel(verb);
 
-  // EM Physics?
-  RegisterPhysics( new G4EmStandardPhysics_option4(1));
-//  emPhysicsList = new G4EmStandardPhysics_option3(1);
-//  emName = G4String("emstandard_opt3");
-  
-  // Hadron Elastic scattering
-  RegisterPhysics( new G4HadronElasticPhysics(verb) );
+//add new units for cross sections
 
-  // Hadron Inelastic Physics
-  ////RegisterPhysics( new G4HadronInelasticQBBC(verb));
-//  RegisterPhysics( new G4HadronPhysicsFTFP_BERT_HP(verb));
-//  RegisterPhysics( new G4HadronPhysicsFTFP_BERT(verb));
-  RegisterPhysics( new G4HadronPhysicsQGSP_BERT_HP(verb));
-//  RegisterPhysics( new G4HadronPhysicsQGSP_BERT(verb));
-//  RegisterPhysics( new G4HadronPhysicsQGSP_BIC_HP(verb));
-  ////RegisterPhysics( new G4HadronPhysicsINCLXX(verb));
-  
-  // Ion Physics
-  RegisterPhysics( new G4IonPhysics(verb));
-  ////RegisterPhysics( new G4IonINCLXXPhysics(verb));
-    
-  // Gamma Physics
-//  RegisterPhysics( new GammaPhysics("gamma"));
+    new G4UnitDefinition( "mm2/g",  "mm2/g", "Surface/Mass", mm2/g);
+    new G4UnitDefinition( "um2/mg", "um2/mg","Surface/Mass", um*um/mg);
+
+// EM Physics?
+    RegisterPhysics( new G4EmStandardPhysics_option3(1));
+
+// Hadron Elastic scattering
+    RegisterPhysics( new G4HadronElasticPhysics(verb) );
+
+// Hadron Inelastic Physics
+    //RegisterPhysics( new G4HadronInelasticQBBC(verb));
+
+    RegisterPhysics( new G4HadronPhysicsQGSP_BERT_HP(verb));
+
+    //RegisterPhysics( new G4HadronPhysicsINCLXX(verb));
+
+// Ion Physics
+    RegisterPhysics( new G4IonPhysics(verb));
+    ////RegisterPhysics( new G4IonINCLXXPhysics(verb));
+
+// Gamma Physics
+    //  RegisterPhysics( new GammaPhysics("gamma"));
+
+   RegisterPhysics( new G4RadioactiveDecayPhysics(verb) );
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -105,38 +102,37 @@ PhysicsList::~PhysicsList()
 
 void PhysicsList::ConstructParticle()
 {
-  G4BosonConstructor  pBosonConstructor;
-  pBosonConstructor.ConstructParticle();
+    G4BosonConstructor  pBosonConstructor;
+    pBosonConstructor.ConstructParticle();
 
-  G4LeptonConstructor pLeptonConstructor;
-  pLeptonConstructor.ConstructParticle();
+    G4LeptonConstructor pLeptonConstructor;
+    pLeptonConstructor.ConstructParticle();
 
-  G4MesonConstructor pMesonConstructor;
-  pMesonConstructor.ConstructParticle();
+    G4MesonConstructor pMesonConstructor;
+    pMesonConstructor.ConstructParticle();
 
-  G4BaryonConstructor pBaryonConstructor;
-  pBaryonConstructor.ConstructParticle();
+    G4BaryonConstructor pBaryonConstructor;
+    pBaryonConstructor.ConstructParticle();
 
-  G4IonConstructor pIonConstructor;
-  pIonConstructor.ConstructParticle();
+    G4IonConstructor pIonConstructor;
+    pIonConstructor.ConstructParticle();
 
-  G4ShortLivedConstructor pShortLivedConstructor;
-  pShortLivedConstructor.ConstructParticle();  
+    G4ShortLivedConstructor pShortLivedConstructor;
+    pShortLivedConstructor.ConstructParticle();
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void PhysicsList::SetCuts()
 {
-
-  G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(10.*eV, 100.*MeV);
-  G4double cutv = 0.1;
-  SetCutValue(cutv*mm, "gamma");
-  SetCutValue(cutv*mm, "e-");
-  SetCutValue(cutv*mm, "e+");
-  SetCutValue(cutv*mm, "proton");
-  SetCutValue(cutv*mm, "neutron");
-  SetCutValue(cutv*mm, "alpha");
-  SetCutValue(cutv*mm, "triton");
+    G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(1.*eV, 100.*MeV);
+    G4double cutv = 10.;
+    SetCutValue(cutv*mm, "gamma");
+    SetCutValue(cutv*mm, "e-");
+    SetCutValue(cutv*mm, "e+");
+/*    SetCutValue(cutv*mm, "proton");
+    SetCutValue(cutv*mm, "neutron");
+    SetCutValue(cutv*mm, "alpha");
+    SetCutValue(cutv*mm, "triton");*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

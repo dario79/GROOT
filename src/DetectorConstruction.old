@@ -70,11 +70,11 @@
 DetectorConstruction::DetectorConstruction()
 :G4VUserDetectorConstruction(),fPBox(0), fLBox(0), fMaterial(0), fMagField(0)
 {
-    fDetThickness = 25*um;
+    fDetThickness = 0.1*mm;
     DefineMaterials();
-//    SetDetMaterial("G4_Galactic");
+    SetDetMaterial("G4_Galactic");
     fDetectorMessenger = new DetectorMessenger(this);
-    detPath = "/home/groot/work/geom_import/SIDAR/";
+    detPath = "/home/cristina/work/SIDAR/";
     fuffa = 2;
     targetPhi = 0;
 }
@@ -100,8 +100,8 @@ void DetectorConstruction::DefineMaterials()
 // define Elements
 
     G4double z,a;
-//    G4Element* N  = new G4Element("Nitrogen" ,"N" , z= 7., a=  14.01*g/mole);
-//    G4Element* O  = new G4Element("Oxygen"   ,"O" , z= 8., a=  16.00*g/mole);
+    G4Element* N  = new G4Element("Nitrogen" ,"N" , z= 7., a=  14.01*g/mole);
+    G4Element* O  = new G4Element("Oxygen"   ,"O" , z= 8., a=  16.00*g/mole);
 
     G4int zz;
     G4int nElem;
@@ -110,8 +110,8 @@ void DetectorConstruction::DefineMaterials()
     G4Element* elFe = pMatMan->FindOrBuildElement(zz=26);
     G4Element* elNi = pMatMan->FindOrBuildElement(zz=28);
     G4Element* elC =  pMatMan->FindOrBuildElement(zz=6);
-    G4Element* elZn = pMatMan->FindOrBuildElement(30);
-    G4Element* elCu = pMatMan->FindOrBuildElement(29);
+    G4Element* Zn = pMatMan->FindOrBuildElement(30);
+    G4Element* Cu = pMatMan->FindOrBuildElement(29);
     G4Element* elLi = pMatMan->FindOrBuildElement(zz=3);
     G4Element* elH = pMatMan->FindOrBuildElement(zz=1);
     G4Element* elF = pMatMan->FindOrBuildElement(zz=9);
@@ -119,9 +119,6 @@ void DetectorConstruction::DefineMaterials()
     G4Element* elW  = pMatMan->FindOrBuildElement(zz=74);
     G4Element* elTi = pMatMan->FindOrBuildElement(zz=22);
     G4Element* elN  = new G4Element("Nitrogen" ,"N" , z= 7., a=  14.01*g/mole);
-    G4Element* elO  = new G4Element("Oxygen", "O", z= 8., a=16.00*g/mole);
-    G4Element* elD  = new G4Element("Deuterium","D",z=1.,2.01*g/mole);
-    G4Element* elB = pMatMan->FindOrBuildElement(zz=5);
 
 // define materials
 
@@ -130,20 +127,19 @@ void DetectorConstruction::DefineMaterials()
     G4double fractionmass;
 
     G4Material* Air = new G4Material("Air", density= 1.290*mg/cm3, ncomponents=2);
-    Air->AddElement(elN, fractionmass= 70.*perCent);
-    Air->AddElement(elO, fractionmass= 30.*perCent);
+    Air->AddElement(N, fractionmass= 70.*perCent);
+    Air->AddElement(O, fractionmass= 30.*perCent);
 
     aluminium = new G4Material("Aluminium"  , z=13., a= 26.98*g/mole, density= 2.700*g/cm3);
     G4Material*  silicon = new G4Material("Silicon"    , z=14., a= 28.09*g/mole, density= 2.330*g/cm3);
     G4Material *carbonMaterial = new G4Material("Carbonium", z=6., a=12.017*g/mole, density= 2.253*g/cm3);  // ATTENZIONE AL FATTORE 1000 (g->kg)
     G4Material* magnesiumMaterial = new G4Material("Magnesium", z=12., a=24.305*g/mole, density= 1.737*g/cm3);  // NELLA DENSITA'
     G4Material* lithiumMaterial = new G4Material("lithium", z=3., a=6.94*g/mole, density= 0.534*g/cm3);
-    
+    G4Element* elO  = new G4Element("Oxygen", "O", z= 8., a=16.00*g/mole);
     G4Material* Sn112Material = new G4Material("Sn112", z=50., a=111.904818*g/mole, density= 7.28*g/cm3);
     G4Material *AuMaterial = new G4Material("Gold", z=79., a=196.97*g/mole, density= 19.32*g/cm3);
     G4Material *PbMaterial = new G4Material("Lead", z=82., a=207.19*g/mole, density= 11.35*g/cm3);
     G4Material* Titanium = new G4Material("Titanium", z=22, a=47.867*g/mole, density= 4.506*g/cm3);
-    G4Material* Cadmium = new G4Material("Cadmium", z=48, a=112.411*g/mole, density= 8.65*g/cm3);
 
     G4Material* Kapton = new G4Material("Kapton", density = 1.413*g/cm3, nElem=4); // Kapton Dupont de Nemur (density: 1.396-1.430, get middle )
     Kapton->AddElement(elO,5);
@@ -152,8 +148,8 @@ void DetectorConstruction::DefineMaterials()
     Kapton->AddElement(elH,10);
 
     G4Material* Brass = new G4Material("Brass", density = 8.70*g/cm3, nElem=2);
-    Brass->AddElement(elZn, 3);
-    Brass->AddElement(elCu, 7);
+    Brass->AddElement(Zn, 3);
+    Brass->AddElement(Cu, 7);
 
     G4Material*  stainlesssteel = new G4Material("StainlessSteel", density = 8.0 *g/cm3, nElem=4);
     stainlesssteel->AddElement(elFe, 0.7366);
@@ -169,32 +165,15 @@ void DetectorConstruction::DefineMaterials()
     LiF->AddElement(elLi, 1);
     LiF->AddElement(elF, 1);
 
-// CH2
-// Polypropelene - polyethylene
-//   G4Material* CH2 = new G4Material ("CH2" , 0.91*g/cm3, 2);
-   density = 0.9*g/cm3; // 0.935*g/cm3; // 0.857 g/cm3
-   G4Material* CH2 = new G4Material("CH2",density, nElem=2);
-   CH2->AddElement(elC,1);
-   CH2->AddElement(elH,2);
-
-   density = 1.06*g/cm3;
-   G4Material* CD2 = new G4Material("CD2",density, nElem=2);
-   CD2->AddElement(elC,1);
-   CD2->AddElement(elD,2);
-
-   G4Material* Paraffin = new G4Material("Paraffin",  density= 0.94*g/cm3, nElem=2);
-//    Paraffin->AddElement(elC,52);
-//    Paraffin->AddElement(elH,25);
-    Paraffin->AddElement(elC,  85.6*perCent);
-    Paraffin->AddElement(elH,  14.4*perCent);
-
 // Mylar
+
     G4Material* Mylar = new G4Material("Mylar", density = 1.39*g/cm3, nElem=3);
     Mylar->AddElement(elO,2);
     Mylar->AddElement(elC,5);
     Mylar->AddElement(elH,4);
 
 // MATERIAL DEFINIOTION VIA THE NIST MATERIAL BUILDER
+
 // window?
 
     G4Element* elSi = pMatMan->FindOrBuildElement(14);
@@ -211,18 +190,6 @@ void DetectorConstruction::DefineMaterials()
     Havar->AddElement(elNi, 0.1310);
     Havar->AddElement(elW , 0.0631);
 
-
-   density = 1.2*g/cm3;
-   G4Material* Epoxy = new G4Material("Epoxy", density, nElem=2);
-   Epoxy->AddElement(elH, 2);
-   Epoxy->AddElement(elC, 2);
-  
-//FR4 (Glass + Epoxy)
-   density = 1.86*g/cm3;
-   G4Material* FR4 = new G4Material("FR4", density, nElem=2);
-   FR4->AddMaterial(SiO2, fractionmass=0.528);
-   FR4->AddMaterial(Epoxy, fractionmass=0.472);
-
 // Vacuum
     density = 6.078e-12 *g/cm3; ;//2.376e-15 *g/cm3;
     G4double temperature = 300. *kelvin;
@@ -230,93 +197,17 @@ void DetectorConstruction::DefineMaterials()
     G4Material* Vacuum = new G4Material("Vacuum", density, nElem=1,kStateGas,temperature,pressure);
     Vacuum->AddMaterial(Air,1.);
 
-    G4Element* elTl = new G4Element("Thallium", "Tl", z=81., a=204.383*g/mole);
-    G4Element* elLa = new G4Element("Lanthanum", "La", z=57.,a=138.90547*g/mole);
-    G4Element* elBr = new G4Element("Bromium", "Br", z=35., a=79.904*g/mole);
-    G4Element* elCe = new G4Element("Cerium", "Tl", z=58., a=140.116*g/mole);
-    G4Element* elGe = new G4Element("Germanium", "Ge", z=32, a=72.630*g/mole);
-
-    //LaBr3
-    G4Material* LaBr3 = new G4Material("LaBr3", density = 5.07*g/cm3, ncomponents=2);
-    LaBr3->AddElement(elLa, nElem=1);
-    LaBr3->AddElement(elBr, nElem=3);
-
-    //LaBr3_Ce
-    G4Material* LaBr3_Ce = new G4Material("LaBr3_Ce", density = 5.08*g/cm3, ncomponents=2);
-    LaBr3_Ce->AddMaterial(LaBr3, 99.5*perCent);
-    LaBr3_Ce->AddElement(elCe, 0.5*perCent);
-
-// CeBr3
-    G4Material* CeBr3 = new G4Material("CeBr3", density = 5.1*g/cm3, ncomponents=2);
-    CeBr3->AddElement(elCe, nElem=1);
-    CeBr3->AddElement(elBr, nElem=3);
-
-
-//He3 def from geant4 forum:
-  //http://hypernews.slac.stanford.edu/HyperNews/geant4/get/materials/122.html?inline=-1
-  G4int protons=2, neutrons=1, nucleons=protons+neutrons;
-  G4double atomicMass = 3.016*g/mole;
-  G4Isotope* he3 = new G4Isotope("He3", protons, nucleons, atomicMass);
-  G4Element* He3 = new G4Element("Helium3", "He3", 1);
-  He3->AddIsotope(he3, 100*perCent);
-  pressure = 4*bar;
-  temperature = 293*kelvin;
-  G4double molar_constant = CLHEP::Avogadro*CLHEP::k_Boltzmann;  //from clhep
-  density = (atomicMass*pressure)/(temperature*molar_constant);
-// fix it 
-//  G4cout<<"3He Tube density: " << density << G4endl; // volume  l:660mm  d:24mm , 298577 mm3 // pressure: 4bar mass: 144.4g; density is 0.48 g/cm3 //ATTENZ: mm3 -->cm3
-  density = 0.48*g/cm3; // 177.43*mg/cm3;  // 0.0013881658858234*g/cm3;  (0.1346*mg/cm3) <-- at 5bar? //  
-  G4cout<<"3He Tube density: " << density << G4endl;
-  G4Material* Helium3 = new G4Material("Helium3", density, 1, kStateGas, temperature, pressure);
-  Helium3->AddElement(He3, 100*perCent);
-
-//Diborano
-  atomicMass = 27.7*g/mole;
-  pressure = 52.5*bar; // 300*0.07*bar;
-  temperature = 86.*kelvin;
-//  molar_constant = CLHEP::Avogadro*CLHEP::k_Boltzmann;  //from clhep
-  density = (atomicMass*pressure)/(temperature*molar_constant);
- density = 0.00118 *g/cm3; 
-
-//  density = 1.e21 // what about the expansion?
-  G4Material* Diborane = new G4Material("Diborane", density, 2, kStateGas, temperature, pressure);
-//    G4Material* Diborane = new G4Material("Diborane", density = 0.00118 *g/cm3, ncomponents=2);
-    Diborane->AddElement(elB, nElem=2);
-    Diborane->AddElement(elH, nElem=6);
-
-
-  G4Material* SiC = new G4Material("SiC", density= 3.22*g/cm3, ncomponents=2);
-    SiC->AddElement(elC, nElem=1);
-    SiC->AddElement(elSi, nElem=1);
-
-
-// Eljen EJ301 Density [g/cc] 0.874 #H atoms/cc 4.82 x 10 22 Ratio H:C 1.212
-
-  G4Material* EJ301 = new G4Material("EJ301", density= 0.874*g/cm3, 2, kStateLiquid);
-	G4double nC = 4.82/1.212; // No. of C Atoms per cm3 (x10^22)
-	G4double nH = 4.82; // No. of H Atoms per cm3 (x10^22)
-	EJ301->AddElement(elH, nH/(nH+nC) );
-	EJ301->AddElement(elC, nC/(nH+nC) );
-
-  G4Element* Ba = new G4Element("Barium", "Ba", z=56, a= 137.327*g/mole);
-
-  G4Material* BaF2 = new G4Material("BaF2", density= 4.89*g/cm3, 2, kStateSolid);
-	BaF2->AddElement(Ba, nElem=1);
-	BaF2->AddElement(elF, nElem=2);
-
-// Te = a1 [1- exp(-a2 T_p ^a3)] + a4 Tp  
-
     PTMaterial = Brass;
     targetLayerMaterial = Sn112Material;//; LiF; // lithiumMaterial; // LiH; // lithiumMaterial;
     backingLayerMaterial =  Mylar; // AuMaterial; // carbonMaterial;
-    worldMaterial = Vacuum; // POLYCUBE // Vacuum; //Air
+    worldMaterial = Vacuum;
     AirMaterial = Air;
     ChamberMaterial = aluminium; // stainlesssteel;
     windowMaterial = aluminium; // tainlesssteel; // Kapton; //aluminium; // Titanium;// SiO2; // Havar; //
-    DetectorMaterial = Vacuum;
+    DetectorMaterial = silicon;
     G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 
-    targetLayerXDimension = 1.*nm; // 0.0018726592 *mm;
+    targetLayerXDimension = 50.*um; // 0.0018726592 *mm;
     fDetThickness = targetLayerXDimension/2;
 
     G4double backingLayerXDimension = 0.0013*mm; //200.*nm;
@@ -363,12 +254,12 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     red->SetForceAuxEdgeVisible(true);
     red-> SetForceLineSegmentsPerCircle(64); //  16 segments of 4 lines each
 
-    G4double worldVolumeXDimension = 5. *m;
-    G4double worldVolumeYDimension = 1. *m;
-    G4double worldVolumeZDimension = 1. *m;
+    G4double worldVolumeXDimension = 3.0 *m;
+    G4double worldVolumeYDimension = 3.0 *m;
+    G4double worldVolumeZDimension = 5.0 *m;
 
-    G4double gapBeforeTarget = 0.0001 *mm;
-    G4double gapAfterTarget = 0.0001 *mm;// 0.01 *mm;
+    G4double gapBeforeTarget = 0.01 *mm;
+    G4double gapAfterTarget = 0.01 *mm;// 0.01 *mm;
 
     targetLayerXPosition = 0. *mm;
     targetLayerYPosition = 0. *mm;
@@ -380,9 +271,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     G4double backingLayerZPosition;
 
     if(backingPos == "before")
-        backingLayerZPosition = gapBeforeTarget +  fBackingThickness/2. + fDetThickness/2.;
+        backingLayerZPosition = gapBeforeTarget +  fBackingThickness + fDetThickness;
     else
-        backingLayerZPosition = -gapAfterTarget -  fBackingThickness/2. - fDetThickness/2.;
+        backingLayerZPosition = -gapAfterTarget -  fBackingThickness - fDetThickness;
 // WORLD VOLUME
     G4Box* sBox = new G4Box("Container",
                             worldVolumeXDimension/2,worldVolumeYDimension/2,worldVolumeZDimension/2);
@@ -403,15 +294,16 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
    //rotm->rotateY(targetPhi*deg);
 
 // TARGET: 27Mg Layer
-    G4Tubs* solidtargetLayer = new G4Tubs("targetLayer",0.98*cm,0.99*cm,fDetThickness/2.,0.*deg,360.*deg);
+    G4Tubs* solidtargetLayer = new G4Tubs("targetLayer",0.,0.99*cm,fDetThickness,0.*deg,360.*deg);
     logictargetLayer = new G4LogicalVolume(solidtargetLayer,targetLayerMaterial,"targetLayerLogic");
     G4VPhysicalVolume* physitargetLayer = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(targetLayerXPosition,targetLayerYPosition,targetLayerZPosition)),logictargetLayer,"targetLayerPhys",fLBox,false,0);
     logictargetLayer -> SetVisAttributes(theWhite);
-/*
-    G4Tubs* solidbackingLayer = new G4Tubs("backingLayer",0.,0.99*cm,fBackingThickness/2.,0.*deg,360.*deg);
+
+    /*G4Tubs* solidbackingLayer = new G4Tubs("backingLayer",0.,0.99*cm,fBackingThickness,0.*deg,360.*deg);
     G4LogicalVolume* logicbackingLayer = new G4LogicalVolume(solidbackingLayer,backingLayerMaterial,"backingLayerLogic");
     G4VPhysicalVolume* physibackingLayer = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(backingLayerXPosition,backingLayerYPosition,backingLayerZPosition)),logicbackingLayer,"backingLayerPhys",fLBox,false,0);
     logicbackingLayer -> SetVisAttributes(red);
+
     rotm->rotateY(-targetPhi*deg);
 
     G4VisAttributes * backVisAtt = new G4VisAttributes(G4Colour(1.,0.,0.,1.));
@@ -432,24 +324,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
     G4LogicalVolume* logicair = new G4LogicalVolume(theair, AirMaterial,"logicair");
     G4VPhysicalVolume* physiair = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(backingLayerXPosition,backingLayerYPosition,-140.*cm)),logicair,"physiair",fLBox,false,0);
     logicair ->  SetVisAttributes(theWhite); // SetVisAttributes(G4Color(1., 1., 1., 0.6));
-
-
-    G4Tubs* apizza = new G4Tubs("pizza",1.*cm,13.*cm,8.*um,0.*deg,360.*deg);
-    G4LogicalVolume* logicpizza = new G4LogicalVolume(apizza, windowMaterial,"logicpizza");
-    G4VPhysicalVolume* physipizza = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(backingLayerXPosition,backingLayerYPosition,10.*cm)),logicpizza,"physipizza",fLBox,false,0);
-    logicpizza->SetVisAttributes(theWhite); // SetVisAttributes(G4Color(1., 1., 1., 0.6));
-
-    G4Tubs* FCup = new G4Tubs("FCup",2.*cm,3.*cm,26.*cm,0.*deg,360.*deg);
-    G4LogicalVolume* logicFCup = new G4LogicalVolume(FCup, PTMaterial,"logicFCup"); // BRASS OR COPPER?
-    G4VPhysicalVolume* physiFCup = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(backingLayerXPosition,backingLayerYPosition,(99+26)*cm)),logicFCup,"physiFCup",fLBox,false,0);
-    logicFCup ->  SetVisAttributes(theWhite);
-    G4Tubs* FCup2 = new G4Tubs("FCup2",0.*cm,2.*cm,2.*cm,0.*deg,360.*deg);
-    G4LogicalVolume* logicFCup2 = new G4LogicalVolume(FCup2, PTMaterial,"logicFCup2"); // BRASS OR COPPER?
-    G4VPhysicalVolume* physiFCup2 = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(backingLayerXPosition,backingLayerYPosition,(101.+52.)*cm)),logicFCup2,"physiFCup2",fLBox,false,0);
-    logicFCup2 ->  SetVisAttributes(red);
 */
+
 // CAD model rotation.
-/*    G4RotationMatrix * rot = new G4RotationMatrix();
+    G4RotationMatrix * rot = new G4RotationMatrix();
     rot->rotateY(0.*deg); // 90 or -90?
 
     G4ThreeVector Theoffset;
@@ -464,19 +342,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
 // Note that offset is applied to the points in mesh directly before placement.
 
-// offset on ELISSAPI files --> 2.4412 is distance between the centroid of the small circle and the origin
-    //G4ThreeVector Theoffset3(0.,0.,+(20.8+2.4412)*cm);   not needed anymore
-*/
-
-/*
-    G4Tubs* LeadFloor = new G4Tubs("LeadFloor",0.,1.5*m,2.5*cm,0.*deg,360.*deg);
-    G4LogicalVolume* logicLeadFloor = new G4LogicalVolume(LeadFloor,DetectorMaterial,"LeadFloorLogic");
-    G4VPhysicalVolume* physiLeadFloor = new G4PVPlacement(G4Transform3D(*rotm,G4ThreeVector(0.,0.,-10.5*cm)),logicLeadFloor,"LeadFloorPhys",fLBox,false,0);
-    logicLeadFloor -> SetVisAttributes(G4Color(0.3, 0.3, 0.3, 1.));
-*/
-//    rotm->rotateY(-targetPhi*deg);
-
-
+    G4RotationMatrix  rot3[12]; // = new G4RotationMatrix(); // rot; //
+    G4ThreeVector Theoffset3(0.,0.,-8.8*cm); // there's a Z offset in the stl file.. I had to correct for that
 
     std::ifstream infile;
     infile.open ("inputFileDetectors.txt");
@@ -485,17 +352,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
     while(infile >> name >> material)
     {
-
-        G4double z, y, x, rotx, roty, rotz;
-
-        infile>>x>>y>>z>>rotx>>roty>>rotz;
-
-        G4ThreeVector position(x*cm,y*cm,z*cm);
-
-        G4RotationMatrix * rot3 = new G4RotationMatrix(); // [12]; // = new G4RotationMatrix(); // rot; //
-        if(roty!=0) rot3->rotateY(roty*deg); // 90 or -90?
-        if(rotx!=0) rot3->rotateX(rotx*deg);
-        if(rotz!=0) rot3->rotateZ(rotz*deg);
 
         G4Material* pttoMaterial = G4NistManager::Instance()->FindOrBuildMaterial(material);
         if (pttoMaterial)
@@ -518,51 +374,125 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
         G4cout<<stripfilename.c_str()<<G4endl;
 
-// REMOVE STL?
-        G4String stripID = name;  /* "YY1-";  
-        stripID.append(std::to_string(i));*/
+        G4String stripID = "YY1-";
+        stripID.append(std::to_string(i));
         G4String stripIDlog = stripID;
         stripIDlog.append("_logical");
 
-        G4String stripIDphys = name; // "YY1-";
-/*        G4String TheDetID = std::to_string(i);
+        G4String stripIDphys = "YY1-";
+        G4String TheDetID = std::to_string(i);
         if(TheDetID.size()==1)
         {
             stripIDphys.append("0");
         }
-        stripIDphys.append(TheDetID);*/
+        stripIDphys.append(TheDetID);
         stripIDphys.append("_physical");
-/*
-auto bunny_mesh = CADMesh::TessellatedMesh::FromSTL("./bunny.stl");
 
-        auto bunny_logical = new G4LogicalVolume( bunny_mesh->GetSolid() 
-                                                 , water
-                                                 , "logical"
-                                                 , 0, 0, 0
-*/
-      if(name.substr(name.find_last_of(".") +1) == "stl" || name.substr(name.find_last_of(".") +1) == "STL") { // fn.substr(fn.find_last_of(".") + 1) == "conf")
-          auto the_mesh = CADMesh::TessellatedMesh::FromSTL( (char*) stripfilename.c_str());
-          the_mesh->SetScale(mm);
-          the_mesh->SetReverse(false);
-          QQ3_logical[i] = new G4LogicalVolume(the_mesh->GetSolid(), DetectorMaterial, stripIDlog, 0, 0, 0);
-      }
-      else {
-          auto the_mesh = CADMesh::TessellatedMesh::FromPLY( (char*) stripfilename.c_str());
-          the_mesh->SetScale(mm);
-          the_mesh->SetReverse(false);
-          QQ3_logical[i] = new G4LogicalVolume(the_mesh->GetSolid(), DetectorMaterial, stripIDlog, 0, 0, 0);
-
-      }
-
+        QQ3mesh[i] = new CADMesh( (char*) stripfilename.c_str(), (char*) "STL");
+        QQ3mesh[i]->SetScale(mm);
+        QQ3mesh[i]->SetReverse(false);
+        QQ3_solid[i] = QQ3mesh[i]->TessellatedMesh();
+        QQ3_logical[i] = new G4LogicalVolume(QQ3_solid[i], DetectorMaterial, stripIDlog, 0, 0, 0);
     //    QQ3_physical[i] = new G4PVPlacement(rot, Theoffset, QQ3_logical[i],
-          QQ3_physical[i] = new G4PVPlacement (G4Transform3D(*rot3/*[i]*/,position), QQ3_logical[i], stripIDphys, fLBox, false, 0);
-          QQ3_logical[i]->SetVisAttributes(G4Color(0.5, 0.5, 0.5, 1.));
+        QQ3_physical[i] = new G4PVPlacement (G4Transform3D(rot3[i],Theoffset3), QQ3_logical[i], stripIDphys, fLBox, false, 0);
+        QQ3_logical[i]->SetVisAttributes(G4Color(0., 1., 0., 1.));
 
         i++;
  }
 
     // Note that offset is applied to the points in mesh directly before placement.
+/*    CADMesh * */
+/*    mesh3 = new CADMesh((char*) "/home/lattuadad/geom_import/M/YY1_1b.stl", (char*) "STL");
+    mesh3->SetScale(mm);
+//    mesh3->SetOffset(offset);
+    mesh3->SetReverse(false);
 
+    G4ThreeVector Theoffset3;
+    Theoffset3.set(0.,0.,0.); // FIX THIS
+//    Theoffset2.set(Z_offset, -0.5*cm-52.4*cm*(sin(rrot*deg)), 52.4*cm*(cos(targetrot*deg))); // FIX THIS
+
+    G4RotationMatrix * rot3 = rot; // new G4RotationMatrix();
+    rot3->rotateY(90.*deg); // 90 or -90?
+
+    Theoffset3.set(Z_offset, Y_offset, X_offset+10.*cm);
+    cad_solid3 = mesh3->TessellatedMesh();
+    cad_logical3 = new G4LogicalVolume(cad_solid3, DetectorMaterial, "cad_logical3", 0, 0, 0);
+    cad_physical3 = new G4PVPlacement(// rot, Theoffset,
+                                     G4Transform3D(*rot3,Theoffset3), cad_logical3,
+                                     "cad_physical3", fLBox, false, 0);
+    cad_logical3->SetVisAttributes(G4Color(0., 1., 0., 1.)); // ->SetVisAttributes(G4Color(1., 1., 1., 0.6));
+*/
+/*
+    Theoffset.set(0., 0., 60.*cm +Z_offset);  // FIX THIS
+    G4RotationMatrix * rot2 = new G4RotationMatrix();
+    rot2->rotateX(90*deg);  // -90, 90, 90  and flip..
+    rot2->rotateY(90*deg);
+    rot2->rotateZ(90*deg);
+*/
+
+    // Note that offset is applied to the points in mesh directly before placement.
+/*    CADMesh * */
+
+
+    /*mesh2 = new CADMesh((char*) "/home/lattuadad/geom_import/M/Chamber2.stl", (char*) "STL");
+    mesh2->SetScale(mm);
+//    mesh2->SetOffset(offset);
+    mesh2->SetReverse(false);
+
+    cad_solid2 = mesh2->TessellatedMesh();
+    cad_logical2 = new G4LogicalVolume(cad_solid2, aluminium, "cad_logical2", 0, 0, 0);
+    cad_physical2 = new G4PVPlacement(G4Transform3D(*rot,Theoffset), cad_logical2,
+                                     "cad_physical2", fLBox, false, 0);
+    cad_logical2->SetVisAttributes(G4Color(1., 1., 1., 0.3));
+
+*/
+/*    CADMesh * */
+/*    mesh4 = new CADMesh((char*) "/home/lattuadad/geom_import/M/PCB.stl", (char*) "STL");
+    mesh4->SetScale(mm);
+//    mesh4->SetOffset(offset);
+    mesh4->SetReverse(false);
+
+    cad_solid4 = mesh4->TessellatedMesh();
+    cad_logical4 = new G4LogicalVolume(cad_solid4, DetectorMaterial, "cad_logical4", 0, 0, 0);   // FIX THE MATERIAL? Fiberglass?
+    cad_physical4 = new G4PVPlacement(//rot, Theoffset, cad_logical4,
+                                     G4Transform3D(*rot,Theoffset), cad_logical4,
+                                     "cad_physical4", fLBox, false, 0);
+    cad_logical4->SetVisAttributes(G4Color(1., 1., 0., 1.));
+*/
+/*
+//    Theoffset.set(-0.44*cm, (12.5+4.)*cm, 0.85*cm);// 15.*cm -Z_offset);  // FIX THIS
+//    Theoffset.set(-7.75*cm, -10.4*cm, 0.*cm);// 15.*cm -Z_offset);  // FIX THIS
+    Theoffset.set((-7.75+2.45*(sin(targetrot*deg)))*cm, -10.4*cm, sin(targetrot*deg)*7.75*cm);
+//targetLayerXPosition+cos(targetrot*deg)*1.*cm), targetLayerYPosition, targetLayerZPosition-(sin(targetrot*deg)*1.*cm)
+   G4RotationMatrix * rot3 = new G4RotationMatrix();
+    rot3->rotateX(90*deg);
+    rot3->rotateZ(90.*deg);
+    rot3->rotateZ(-targetrot*deg);
+*/
+// /control/execute vis.mac
+
+
+
+// QQ3 HERE
+
+// CAD model ladder (co)rotation.
+    /*G4ThreeVector Theoffset2;
+    Theoffset2.set(0.,0.,0.); // FIX THIS
+    G4RotationMatrix * rot2 = rot; // new G4RotationMatrix();
+    rot2->rotateY(targetrot*deg); // 90 or -90?*/
+
+//    CADMesh
+    /*mesh5 = new CADMesh((char*) "/home/lattuadad/geom_import/M/TargetLadder.stl", (char*) "STL");
+    mesh5->SetScale(mm);
+//    mesh->SetOffset(offset);
+    mesh5->SetReverse(false);
+    cad_solid5 = mesh5->TessellatedMesh();
+    cad_logical5 = new G4LogicalVolume(cad_solid5, aluminium, "cad_logical5", 0, 0, 0);
+    cad_physical5 = new G4PVPlacement(//rot2, Theoffset, cad_logical5,
+                                      G4Transform3D(*rot2,Theoffset2), cad_logical5,
+                                     "cad_physical5", fLBox, false, 0);
+    cad_logical5->SetVisAttributes(G4Color(1., 1., 1., 0.25));
+*/
 
     G4cout<<"Detector ready."<<G4endl;
 
@@ -575,7 +505,7 @@ auto bunny_mesh = CADMesh::TessellatedMesh::FromSTL("./bunny.stl");
 
 void DetectorConstruction::PrintParameters()
 {
-    G4cout << "\n Maybe it's a lie: The Backing is " << G4BestUnit(fBackingThickness,"Length")
+    G4cout << "\n The Backing is " << G4BestUnit(fBackingThickness,"Length")
     << " of " << backingLayerMaterial->GetName() <<G4endl;
 }
 
@@ -677,7 +607,7 @@ G4double DetectorConstruction::GetTargetPosZ()
 
 G4double DetectorConstruction::GetTargetThickness()
 {
-    return fDetThickness;
+    return targetLayerXDimension;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

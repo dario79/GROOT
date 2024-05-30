@@ -38,9 +38,13 @@
 #include "globals.hh"
 
 class PrimaryGeneratorAction;
-class G4UIdirectory;
 class G4UIcmdWithAnInteger;
 class G4UIcmdWithADouble;
+class G4UIcmdWithAString;
+class G4UIdirectory;
+class G4UIcmdWithoutParameter;
+class G4UIcmdWithADoubleAndUnit;
+class G4Event;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -49,15 +53,30 @@ class PrimaryGeneratorMessenger: public G4UImessenger
   public:
     PrimaryGeneratorMessenger(PrimaryGeneratorAction*);
    ~PrimaryGeneratorMessenger();
-    
+
     virtual void SetNewValue(G4UIcommand*, G4String);
-    
+
   private:
     PrimaryGeneratorAction* Action;
-    
-    G4UIdirectory*             fGunDir; 
-    G4UIcmdWithAnInteger*      fDefaultCmd;
-    G4UIcmdWithADouble*        fRndmCmd;
+
+    G4UIdirectory*             fGunDir;
+    G4UIcmdWithoutParameter*   fDefaultCmd;
+    G4UIdirectory*             fGrootDir;
+    G4UIcmdWithADoubleAndUnit* fEnergyCmd;
+    G4UIcmdWithADoubleAndUnit* frbeamCmd;
+    G4UIcmdWithAnInteger*      fP1ACmd;
+    G4UIcmdWithAnInteger*      fP1ZCmd;
+    G4UIcmdWithAnInteger*      fP2ACmd;
+    G4UIcmdWithAnInteger*      fP2ZCmd;
+    G4UIcmdWithAnInteger*      fP3ACmd;
+    G4UIcmdWithAnInteger*      fP3ZCmd;
+    G4UIcmdWithADouble*        fmassP1Cmd;
+    G4UIcmdWithADouble*        fmassP2Cmd;
+    G4UIcmdWithADouble*        fmassP3Cmd;
+    G4UIcmdWithADouble*        fmassProjectileCmd;
+    G4UIcmdWithADouble*        fmassTargetCmd;
+    G4UIcmdWithADoubleAndUnit*        fStateCmd;
+    G4UIcmdWithADoubleAndUnit* fRndmCmd;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

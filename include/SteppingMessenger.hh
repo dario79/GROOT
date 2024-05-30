@@ -23,61 +23,50 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file hadronic/Hadr03/include/EventAction.hh
-/// \brief Definition of the EventAction class
+/// \file electromagnetic/TestEm1/include/SteppingMessenger.hh
+/// \brief Definition of the SteppingMessenger class
 //
-// $Id: EventAction.hh 66241 2012-12-13 18:34:42Z gunter $
-// 
+// $Id: SteppingMessenger.hh 66241 2012-12-13 18:34:42Z gunter $
+//
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef EventAction_h
-#define EventAction_h 1
+#ifndef SteppingMessenger_h
+#define SteppingMessenger_h 1
 
-#include "G4UserEventAction.hh"
-#include "G4Accumulable.hh"
+#include "G4UImessenger.hh"
 #include "globals.hh"
-#include "G4ThreeVector.hh"
-#include <vector>
 
-class EventActionMessenger;
+class SteppingAction;
+class G4UIcmdWithAnInteger;
+class G4UIcmdWithADouble;
+class G4UIcmdWithAString;
+class G4UIdirectory;
+class G4UIcmdWithoutParameter;
+class G4UIcmdWithADoubleAndUnit;
+class G4Event;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class EventAction : public G4UserEventAction
+class SteppingMessenger: public G4UImessenger
 {
   public:
-    EventAction();
-   ~EventAction();
+    SteppingMessenger(SteppingAction*);
+   ~SteppingMessenger();
 
-  public:
-    virtual void BeginOfEventAction(const G4Event*);
-    virtual void EndOfEventAction(const G4Event*);
-    
-    void SetPrintModulo(G4int val) {fPrintModulo = val;};
-    void SetDrawFlag(G4String val) {fDrawFlag = val;};
-    void AddEdep(G4double, G4ThreeVector, G4String, G4String, G4String, G4int, G4int);
+    virtual void SetNewValue(G4UIcommand*, G4String);
 
   private:
-    G4int                 fPrintModulo;                    
-    EventActionMessenger* fEventMessenger;
-    G4String               fDrawFlag;
-    G4double theta,phi;//,e_rec;
-    G4String outputType;
-    std::vector <G4int> Type;
-    std::vector <G4double> Energy;
-    std::vector <G4double> Theta;
-    std::vector <G4double> Phi;
-    std::vector <G4String> PName;
-    std::vector <G4String> VName;
-    std::vector <G4String> deleteS;
-    std::vector <G4int> deleteI;
-    std::vector <G4double> deleteD;
-    std::vector <G4int> ID;
+    SteppingAction* fStepping;
+
+    G4UIdirectory*             fStepDir;
+    G4UIdirectory*             fGrootDir;
+    G4UIcmdWithAString*        fOutputTypeCmd;
+    G4UIcmdWithAString*        fOutputNameCmd;
+    G4UIcmdWithAString*        fTrackCmd;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
-    

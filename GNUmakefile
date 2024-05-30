@@ -7,8 +7,10 @@ name := GROOT
 G4TARGET := $(name)
 G4EXLIB := true
 
+
 ifndef G4INSTALL
-  G4INSTALL = ../../../..
+ G4INSTALL = "/opt/geant4/geant4.10.06.p01-install-new/usr/local/share/Geant4-10.6.1/geant4make"
+# G4INSTALL = ../../../..
 endif
 
 .PHONY: all
@@ -18,9 +20,9 @@ include $(G4INSTALL)/config/architecture.gmk
 
 include $(G4INSTALL)/config/binmake.gmk
 
-LDFLAGS += $(shell $(ROOTSYS)/bin/root-config --glibs)
+LDFLAGS += $(shell /usr/bin/root-config --glibs)
 
-CPPFLAGS += $(shell $(ROOTSYS)/bin/root-config --cflags) -std=gnu++11
+CPPFLAGS += $(shell /usr/bin/root-config --cflags) -std=gnu++11
 
 # include ../../cadmesh.gmk
 

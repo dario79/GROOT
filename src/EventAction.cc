@@ -27,107 +27,134 @@
 /// \brief Implementation of the EventAction class
 //
 // $Id: EventAction.cc 70759 2013-06-05 12:26:43Z gcosmo $
-// 
+//
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "EventAction.hh"
-
+#include "HistoManager.hh"
 #include "EventActionMessenger.hh"
+
 #include "G4EventManager.hh"
 #include "G4Event.hh"
 #include "G4UnitsTable.hh"
+#include "G4ParticleTypes.hh"
+#include "G4VUserEventInformation.hh"
+#include "G4Trajectory.hh"
+#include "G4VVisManager.hh"
 
+#include "Randomize.hh"
+#include "G4PhysicalConstants.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::EventAction()
 :G4UserEventAction(),
  fPrintModulo(100000),fEventMessenger(0)
 {
-  fEventMessenger = new EventActionMessenger(this);
+    fEventMessenger = new EventActionMessenger(this);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 EventAction::~EventAction()
 {
-  delete fEventMessenger;
+    delete fEventMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void EventAction::BeginOfEventAction(const G4Event* evt)
 {
- G4int evtNb = evt->GetEventID();
- 
+    G4int evtNb = evt->GetEventID();
+
  //printing survey
- if (evtNb%fPrintModulo == 0) 
-    G4cout << "\n---> Begin of Event: " << evtNb << G4endl;
+    if (evtNb%fPrintModulo == 0)
+        G4cout << "\n---> Begin of Event: " << evtNb << G4endl;
+   Energy.clear();
+   Type.clear();
+   PName.clear();
+   VName.clear();
+   Theta.clear();
+   Phi.clear();
+   ID.clear();
+
+   swap(Energy, deleteD);
+   deleteD = Energy;
+   swap(Theta, deleteD);
+   deleteD = Theta;
+   swap(Phi, deleteD);
+   deleteD = Phi;
+   swap(ID, deleteI);
+   deleteI = ID;
+   swap(Type, deleteI);
+   deleteI = Type;
+   swap(PName, deleteS);
+   deleteS = PName;
+   swap(VName, deleteS);
+   deleteS = VName;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-#include "G4ParticleTypes.hh"
-#include "G4VUserEventInformation.hh"
-#include "G4Trajectory.hh"
-#include "G4VVisManager.hh"
 
 void EventAction::EndOfEventAction(const G4Event* evt)
 {
+    //std::ofstream outf;
+    //outf.open("test.txt", std::ios::out | std::ios::app );
 
+    if(outputType != "txt")
+    {
+        for(int i = 0; i < (int)Energy.size(); i++)
+        {
+            auto analysisManager = G4AnalysisManager::Instance();
+            analysisManager->FillNtupleSColumn(2, 0, PName[i]);
+            analysisManager->FillNtupleDColumn(2, 1, Energy[i]);
+            //analysisManager->FillNtupleDColumn(2, 2, e_rec);
+            analysisManager->FillNtupleDColumn(2, 2, Theta[i]);
+            analysisManager->FillNtupleDColumn(2, 3, Phi[i]);
+            analysisManager->FillNtupleSColumn(2, 4, VName[i]);
+            analysisManager->FillNtupleIColumn(2, 5, evt->GetEventID());
+            analysisManager->AddNtupleRow(2);
 
-/*if () {
-   G4EventManager* em = G4EventManager::GetEventManager();
-   em->KeepTheCurrentEvent();
-}*/
-
-/* G4VUserEventInformation* eventInformation = (G4VUserEventInformation*) evt->GetUserInformation();
- std::ofstream outf;
- outf.open("camurria.txt", std::ios::out | std::ios::app );
- G4EventManager* yo = G4EventManager::GetEventManager();
- G4TrajectoryContainer* trajectoryContainer=evt->GetTrajectoryContainer();
- 
-  G4int n_trajectories = 0;
-  if (trajectoryContainer) n_trajectories = trajectoryContainer->entries();
- 
-  // extract the trajectories and draw them
-     if (G4VVisManager::GetConcreteInstance()){
-         for (G4int i=0; i<n_trajectories; i++){
-             G4Trajectory* trj = (G4Trajectory*)((*(evt->GetTrajectoryContainer()))[i]);
-             if(trj->GetParticleName()!="gamma" || trj->GetPDGEncoding() != 22){
-//                   trj->SetForceDrawTrajectory(fForcedrawphotons);
-//                   trj->SetForceNoDrawTrajectory(fForcenophotons);                  
-                   yo->KeepTheCurrentEvent();
-                   outf<<" Event is ... "<<trj->GetParticleName()<<" , code is "<<trj->GetPDGEncoding()<<G4endl;
-//        delete yo;
-                   G4cout<<" Event is ... "<<trj->GetParticleName()<<" , code is "<<trj->GetPDGEncoding()<<G4endl;
-//          evt.ToBeKept();
-             trj->DrawTrajectory();
-             }
-         }
-     }
-
-*/
-
-/*       G4PrimaryParticle* particle = evt->GetPrimaryVertex()->GetPrimary();
-//   G4String partName = particle->GetParticleName();
-//       if (partname=='alpha' )
- std::ofstream outf;
- outf.open("camurria.txt", std::ios::out | std::ios::app );
- G4EventManager* yo = G4EventManager::GetEventManager();
-
-
-        if(particle->GetPDGcode() != 22){  // NOT A GAMMA
-        yo->KeepTheCurrentEvent();
- 	outf<<" Event is ... "<<particle->GetG4code()->GetParticleName()<<" , code is "<<particle->GetPDGcode()<<G4endl;
-        G4cout<<" Event is ... "<<particle->GetG4code()->GetParticleName()<<G4endl;
-//          evt.ToBeKept();
+            //outf<<evt->GetEventID()<<' '<<PName[i]<<' '<<Energy[i]<<' '<<Theta[i]<<' '<<Phi[i]<<' '<<VName[i]<<'\n';
         }
-//        delete yo;
-*/
-//  outf.close();
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void EventAction::AddEdep(G4double edep, G4ThreeVector pos, G4String pname, G4String vname, G4String t, G4int type, G4int id)
+{
+
+    int sw = 0;
+
+    for(int i = 0; i < (int)Energy.size(); i++)
+    {
+        if(Type[i] == 1 && ID[i] == id)
+        {
+            Energy[i] += edep;
+            sw = 1;
+        }
+    }
+    if(sw == 0)
+    {
+        PName.push_back(pname);
+        Energy.push_back(edep);
+        VName.push_back(vname);
+        Type.push_back(type);
+        theta = acos(pos.z());
+        if(theta<=0) theta += twopi;
+        phi =  atan2(pos.y(),pos.x());
+        if(phi<=0) phi += twopi;
+        Theta.push_back(theta);
+        Phi.push_back(phi);
+        ID.push_back(id);
+    }
+    outputType = t;
+    //e_rec=0;
+   // if (PName!="e-") e_rec = G4RandGauss::shoot(fEdepH.GetValue(),fEdepH.GetValue()/100.);
+// acos z/dist 
+//    theta2 = atan2(pos.y(),pos.z());
+//    phi2 =  atan2(pos.x(),pos.z());
+}
 
 
