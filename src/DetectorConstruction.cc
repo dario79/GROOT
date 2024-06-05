@@ -397,7 +397,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
                               false,                       //no boolean operation
                               0);                          //copy number
 
-   fLBox->SetVisAttributes(G4VisAttributes::Invisible);
+   fLBox->SetVisAttributes(G4VisAttributes::GetInvisible());
 
    G4RotationMatrix* rotm  = new G4RotationMatrix();
    //rotm->rotateY(targetPhi*deg);
