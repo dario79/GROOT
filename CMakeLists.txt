@@ -38,7 +38,7 @@ include(${Geant4_USE_FILE})
 #message(${CMAKE_MODULE_PATH})
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} /home/lattuadad/geant4.10.04.p02/cmake/Modules/)
 find_package(ROOT REQUIRED)
-SET( ROOT_INCLUDE_DIR "/usr/include/root")
+SET( ROOT_INCLUDE_DIR "/usr/local/include/root")
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
 #
