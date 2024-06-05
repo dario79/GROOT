@@ -60,6 +60,7 @@ void GammaPhysics::ConstructProcess()
 {
     G4ProcessManager* pManager = G4Gamma::Gamma()->GetProcessManager();
     G4HadronInelasticProcess* process = new G4HadronInelasticProcess("photonNuclear", G4Gamma::Definition());
+    photonNuclear->AddDataSet( new G4PhotoNuclearCrossSection );
 
     G4CascadeInterface* theCascade = new G4CascadeInterface();
     theCascade->usePreCompoundDeexcitation();
