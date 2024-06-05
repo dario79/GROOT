@@ -38,7 +38,7 @@
 
 // Processes
 
-#include "G4PhotoNuclearProcess.hh"
+#include "G4HadronInelasticProcess.hh"
 #include "G4CascadeInterface.hh"
 
 #include "G4SystemOfUnits.hh"
