@@ -39,7 +39,6 @@ include(${Geant4_USE_FILE})
 #message(${CMAKE_MODULE_PATH})
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} /home/lattuadad/geant4.10.04.p02/cmake/Modules/)
 find_package(ROOT REQUIRED)
-SET( ROOT_INCLUDE_DIR "/usr/local/include/root")
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
 #
@@ -51,7 +50,7 @@ message( STATUS ${ROOT_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/include 
                     ${Geant4_INCLUDE_DIR}
 #                    ${CADMESH_INCLUDE_DIR}
-                    ${ROOT_INCLUDE_DIR})
+                    ${ROOT_INCLUDE_DIRS})
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
