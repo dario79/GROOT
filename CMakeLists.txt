@@ -46,11 +46,13 @@ find_package(ROOT REQUIRED)
 message( STATUS ${ROOT_INCLUDE_DIR})
 #message(${ROOT_LIBRARIES})
 
+#SET(CLHEP_INCLUDE "$HOME/miniconda3/include/Geant4/CLHEP/")
 
 include_directories(${PROJECT_SOURCE_DIR}/include 
                     ${Geant4_INCLUDE_DIR}
 #                    ${CADMESH_INCLUDE_DIR}
-                    ${ROOT_INCLUDE_DIRS})
+                    ${ROOT_INCLUDE_DIRS}
+		    ${CLHEP_INCLUDE})
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
