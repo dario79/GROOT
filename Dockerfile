@@ -18,6 +18,7 @@ RUN dnf install gcc \
 ENV GEANT4_VERSION 11.2.1 
 #maybe set this in the docker-compose file
 
+#compile and install geant4
 RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant4-v${GEANT4_VERSION}.tar.gz \
     && mkdir -p /opt/geant4/src \
     && mkdir /opt/geant4/build \
@@ -41,6 +42,7 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
     && make -j$(nproc) \
     && make install
 
+#compile and install root
 RUN mkdir -p /opt/root/ \
     && mkdir /opt/root/build \
     && mkdir /opt/root/install \
@@ -51,3 +53,20 @@ RUN mkdir -p /opt/root/ \
         -DCMAKE_INSTALL_PREFIX=/opt/root/install \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
+
+RUN mkdir -p /opt/GROOT/source \
+    && mkdir /opt/GROOT/build \
+    && mkdir /opt/GROOT/install 
+
+COPY ./GROOT.cc /opt/GROOT/source/
+COPY ./CMakeLists.txt /opt/GROOT/source/
+COPY ./src /opt/GROOT/source/src/
+COPY ./include /opt/GROOT/source/include/
+COPY ./cmake /opt/GROOT/source/cmake/
+
+RUN cd /opt/GROOT/build \
+    && cmake \
+        -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
+        ../source \
+    && make -j$(nproc) \
+    && make install
