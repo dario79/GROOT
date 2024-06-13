@@ -49,8 +49,5 @@ RUN mkdir -p /opt/root/ \
     && cd /opt/root/build \
     && cmake \
         -DCMAKE_INSTALL_PREFIX=/opt/root/install \
-        -Dxrootd=OFF \
-        -Dbuiltin_xrootd=OFF \
-        -Dminimal=ON \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
