@@ -52,6 +52,8 @@ RUN mkdir -p /opt/root/ \
     && cd /opt/root/build \
     && cmake \
         -DCMAKE_INSTALL_PREFIX=/opt/root/install \
+        -DBUILD_STATIC_LIBS=ON \
+        -DBUILD_SHARED_LIBS=OFF \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
@@ -68,6 +70,8 @@ COPY ./cmake /opt/GROOT/source/cmake/
 RUN cd /opt/GROOT/build \
     && cmake \
         -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
+        -DBUILD_STATIC_LIBS=ON \
+        -DBUILD_SHARED_LIBS=OFF \
         ../source \
     && make -j$(nproc) \
     && make install
