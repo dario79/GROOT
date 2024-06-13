@@ -11,6 +11,7 @@ RUN dnf install gcc \
     xerces-c-devel \
     qt5-devel \
     libXmu-devel \
+    libXpm-devel \
     git \
     nano -y
 
