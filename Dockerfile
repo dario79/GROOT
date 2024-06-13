@@ -1,7 +1,7 @@
 FROM almalinux:latest
 
 RUN dnf install epel-release -y \
-    && dnf config-manager --set-enabled crb
+    && dnf config-manager --set-enabled crb \
     && dnf update -y
 
 RUN dnf install gcc \
