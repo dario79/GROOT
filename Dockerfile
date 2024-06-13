@@ -2,9 +2,7 @@ FROM almalinux:latest
 
 RUN yum install epel-release -y && yum update -y
 
-RUN yum install -y \
-    gcc \
-    gcc-c++ \
+RUN yum install gcc \
     make \
     cmake \
     wget \
@@ -12,7 +10,7 @@ RUN yum install -y \
     qt5-devel \
     libXmu-devel \
     git \
-    nano
+    nano -y
 
 
 ENV GEANT4_VERSION 11.2.1 
