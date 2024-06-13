@@ -1,8 +1,10 @@
 FROM almalinux:latest
 
-RUN yum install epel-release -y && yum update -y
+RUN dnf install epel-release -y \
+    && dnf config-manager --set-enabled crb
+    && dnf update -y
 
-RUN yum install gcc \
+RUN dnf install gcc \
     make \
     cmake \
     wget \
