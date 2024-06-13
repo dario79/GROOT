@@ -11,7 +11,7 @@ RUN dnf install gcc \
     xerces-c-devel \
     qt5-devel \
     binutils \
-    libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel \
+    libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
     xrootd-client-devel xrootd-libs-devel \
     mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
     fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
