@@ -29,8 +29,8 @@ COPY --from=builder0 /opt/GROOT/install /opt/GROOT/
 
 RUN dnf install -y dbus dbus-x11
 
-RUN addgroup -g 1001 groot && \
-    adduser -S -u 1001 -G groot groot
+RUN groupadd --gid 1001 groot && \
+    useradd --uid 1001 --gid 1001 groot
 RUN chown -R groot:groot /opt && \
     chmod 755 -R /opt
 USER groot
