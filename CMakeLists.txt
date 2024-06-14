@@ -10,6 +10,7 @@ set(CMAKE_CXX_VERSION 17)
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
 #
+include(${CMAKE_SOURCE_DIR}/cmake/Modules/FindGeant4.cmake)
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
@@ -40,7 +41,7 @@ find_package(ROOT REQUIRED)
 #----------------------------------------------------------------------------
 # Find CLHEP
 #
-find_package(CLHEP REQUIRED)
+#find_package(CLHEP REQUIRED)
 #
 #--------------------------------------------
 # Locate sources and headers for this project
