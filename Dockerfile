@@ -93,7 +93,7 @@ COPY ./entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 RUN chmod +x /opt/GROOT/source/build-GROOT.sh
-RUN "/opt/GROOT/source/build-GROOT.sh"
+#RUN "/opt/GROOT/source/build-GROOT.sh"
 
 #RUN cd /opt/GROOT/build \
 #    && cmake \
