@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/geant4/install/bin/geant4.sh
-source /opt/root/install/bin/thisroot.sh
+source /opt/geant4/bin/geant4.sh
+source /opt/root/bin/thisroot.sh
 
 exec "$@"
