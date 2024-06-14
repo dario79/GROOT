@@ -64,6 +64,8 @@ RUN mkdir -p /opt/root/ \
 
 RUN source /opt/geant4/install/bin/geant4.sh
 RUN source /opt/root/install/bin/thisroot.sh
+RUN geant4-config --cflags
+RUN root-config --cflags
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
