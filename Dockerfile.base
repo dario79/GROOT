@@ -1,25 +1,4 @@
-FROM almalinux:latest
-
-RUN dnf install epel-release -y \
-    && dnf config-manager --set-enabled crb \
-    && dnf update -y
-
-RUN dnf install gcc \
-    make \
-    cmake \
-    wget \
-    xerces-c-devel \
-    qt5-devel \
-    binutils \
-    libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
-    xrootd-client-devel xrootd-libs-devel \
-    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
-    fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
-    avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
-    libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
-    git \
-    nano -y
-
+FROM alexo91/alma9-base:latest
 
 ENV GEANT4_VERSION 11.2.1 
 #maybe set this in the docker-compose file
@@ -36,7 +15,7 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
         -DCMAKE_INSTALL_PREFIX=/opt/geant4/install \
         -DGEANT4_INSTALL_DATA=ON \
         -DGEANT4_INSTALL_DATADIR=/opt/geant4/data \
-        -DGEANT4_BUILD_MULTITHREADED=ON \
+        -DGEANT4_BUILD_MULTITHREADED=OFF \
         -DGEANT4_INSTALL_EXAMPLES=OFF \
         -DGEANT4_USE_SYSTEM_EXPAT=OFF \
         -DBUILD_STATIC_LIBS=ON \
@@ -62,6 +41,9 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
+#--------------------------------------------------
 
-COPY entrypoint-base.sh /entrypoint-base.sh
-ENTRYPOINT ["/entrypoint-base.sh"]
+FROM alexo91/alma9-base:latest
+
+COPY --from=builder0 /opt/geant4/install /opt/geant4/
+COPY --from=builder0 /opt/root/install /opt/root/
