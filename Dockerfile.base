@@ -62,4 +62,6 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
-ENTRYPOINT ["/entrypoint.sh"]
+
+COPY entrypoint-base.sh /entrypoint-base.sh
+ENTRYPOINT ["/entrypoint-base.sh"]
