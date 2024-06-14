@@ -62,8 +62,8 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
-RUN source /opt/geant4/install/bin/geant4.sh
-RUN source /opt/root/install/bin/thisroot.sh
+RUN "/opt/geant4/install/bin/geant4.sh"
+RUN "/opt/root/install/bin/thisroot.sh"
 RUN geant4-config --cflags
 RUN root-config --cflags
 
