@@ -1,26 +1,5 @@
-FROM almalinux:latest as builder0
+FROM alexo91/alma9-base:latest as builder0
 LABEL stage="builder"
-
-RUN dnf install epel-release -y \
-    && dnf config-manager --set-enabled crb \
-    && dnf update -y
-
-RUN dnf install gcc \
-    make \
-    cmake \
-    wget \
-    xerces-c-devel \
-    qt5-devel \
-    binutils \
-    libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
-    xrootd-client-devel xrootd-libs-devel \
-    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
-    fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
-    avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
-    libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
-    git \
-    nano -y
-
 
 ENV GEANT4_VERSION 11.2.1 
 #maybe set this in the docker-compose file
@@ -38,14 +17,14 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
         -DGEANT4_INSTALL_DATA=ON \
         -DGEANT4_INSTALL_DATADIR=/opt/geant4/data \
         -DGEANT4_BUILD_MULTITHREADED=OFF \
-        -DGEANT4_INSTALL_EXAMPLES=OFF \
-        -DGEANT4_USE_SYSTEM_EXPAT=OFF \
-        -DBUILD_STATIC_LIBS=ON \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DGEANT4_USE_OPENGL_X11=ON \
-        -DGEANT4_USE_GDML=ON \
-        -DGEANT4_USE_QT=ON \
-        ../src/geant4-v${GEANT4_VERSION} \
+        -DGEANT4_INSTALL_EXAMPLES=OFF \#RUN cd /opt/GROOT/build \
+        #    && cmake \
+        #        -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
+        #        -DBUILD_STATIC_LIBS=ON \
+        #        -DBUILD_SHARED_LIBS=OFF \
+        #        ../source \
+        #    && make -j$(nproc) \
+        #    && make install
     && make -j$(nproc) \
     && make install
 
@@ -58,7 +37,7 @@ RUN mkdir -p /opt/root/ \
     && cd /opt/root/build \
     && cmake \
         -DCMAKE_INSTALL_PREFIX=/opt/root/install \
-        -DBUILD_STATIC_LIBS=ON \
+        -DBUILD_STATIC_LIBS=Oalmalinux:latestN \
         -DBUILD_SHARED_LIBS=OFF \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
@@ -83,31 +62,12 @@ RUN "/opt/GROOT/source/build-GROOT.sh"
 
 
 #--------------------------------------------------
-    
-FROM almalinux:latest
+
+FROM alexo91/alma9-base:latest
 
 COPY --from=builder0 /opt/geant4/install /opt/geant4/
 COPY --from=builder0 /opt/root/install /opt/root/
 COPY --from=builder0 /opt/GROOT/install /opt/GROOT/
-
-RUN dnf install epel-release -y \
-    && dnf config-manager --set-enabled crb \
-    && dnf update -y\
-    && dnf install gcc \
-        make \
-        cmake \
-        wget \
-        xerces-c-devel \
-        qt5-devel \
-        binutils \
-        libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
-        xrootd-client-devel xrootd-libs-devel \
-        mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
-        fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
-        avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
-        libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
-        git \
-        nano -y
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
