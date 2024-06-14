@@ -40,19 +40,33 @@
 
 class G4ParticleDefinition;
 class RunAction;
+class EventAction;
+class SteppingMessenger;
+class PrimaryGeneratorAction;
+class DetectorConstruction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class SteppingAction : public G4UserSteppingAction
 {
   public:
-    SteppingAction(RunAction*);
+    SteppingAction(RunAction*, EventAction*, PrimaryGeneratorAction* );
    ~SteppingAction();
 
     virtual void UserSteppingAction(const G4Step*);
+    G4int sw, id;
+    G4String PName, outputType, track, outputName, oldPName;
+    G4double oldEnergy;
+    void SelectOutputType(G4String);
+    void SelectOutputName(G4String);
+    void SelectTrack(G4String);
+
     
   private:
     RunAction*              fRunAction;
+    EventAction*            fEventAction;
+    PrimaryGeneratorAction*    fPrimary;
+    SteppingMessenger*      fSteppingMessenger;
     std::map<G4ParticleDefinition*,G4int> fParticleFlag;    
 };
 

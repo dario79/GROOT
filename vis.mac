@@ -6,6 +6,15 @@
 #
 /control/verbose 2
 /run/verbose 2
+
+/groot/det/setDetMat CH2
+/groot/det/setDetThickness 1 um
+/groot/det/setBackingMat CH2
+/groot/det/setBackingThickness 0.001 um
+/groot/det/FilesPath /home/lattuadad/geom/HIGS/
+/groot/det/setBackingPos before
+/groot/det/setTargetPhi 0
+/groot/det/setReactionType 4
 #
 /run/initialize
 #
@@ -31,6 +40,8 @@
 #
 # Draw geometry:
 /vis/drawVolume
+
+
 #
 # Specify view angle:
 #/vis/viewer/set/viewpointThetaPhi 90. 0.
@@ -66,7 +77,7 @@
 # Many other options are available with /vis/modeling and /vis/filtering.
 # For example, to select colour by particle ID:
 #/vis/modeling/trajectories/create/drawByParticleID
-#/vis/modeling/trajectories/drawByParticleID-0/set e- blue
+#/vis/modeling/trajectories/drawByParticleID-0/set gamma white
 #
 # To superimpose all of the events from a given run:
 /vis/scene/endOfEventAction accumulate
@@ -77,3 +88,35 @@
 #
 # For file-based drivers, use this to create an empty detector view:
 #/vis/viewer/flush
+/vis/viewer/set/style surface
+/vis/scene/add/axes 0 0 0 10 cm
+
+# setReactionType 0 (50e6 x 20 runs) and 2 (1e6) for energies 5,6,7,8,9,10 MeV 
+/groot/gun/energy 0.662 MeV
+/groot/gun/rbeam 1 mm
+
+#////////// reazione 19F(p,a)160 @ 20 MeV  ////////////////////////
+#    G4double     root_mp=18.99840322;           // massa proiettile  
+#    G4double     root_mt=1.007825;   // massa target                 
+#    G4double     root_m1=4.002603;    // massa prima part. uscente    
+#    G4double     root_m2=15.99491461956;   // massa seconda part. uscente  
+#////////////////////////////////////////////////////////////////////
+
+/groot/gun/particle1A 4
+/groot/gun/particle1Z 2
+/groot/gun/particle2A 16
+/groot/gun/particle2Z 8
+/groot/gun/setState 0 MeV
+/groot/gun/massPart1 4.002602
+/groot/gun/massPart2 15.99491461956
+/groot/gun/massProjectile 18.99840322
+/groot/gun/massTarget 1.007825
+
+
+/groot/analysis/outputType both
+/groot/analysis/outputName HIGS-test
+
+# HIGS-energy-type_run
+/groot/track on
+/run/initialize
+

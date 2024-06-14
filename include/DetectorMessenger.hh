@@ -23,7 +23,7 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file electromagnetic/TestEm1/include/DetectorMessenger.hh
+/// \file electromagnetic/Groot1/include/DetectorMessenger.hh
 /// \brief Definition of the DetectorMessenger class
 //
 // $Id: DetectorMessenger.hh 66241 2012-12-13 18:34:42Z gunter $
@@ -42,6 +42,8 @@ class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithoutParameter;
+class G4UIcmdWithAnInteger;
+class G4UIcmdWithADouble;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -58,12 +60,18 @@ class DetectorMessenger: public G4UImessenger
   
     DetectorConstruction*      fDetector;
 
-    G4UIdirectory*             fTestemDir;
+    G4UIdirectory*             fGrootDir;
     G4UIdirectory*             fDetDir;
-    G4UIcmdWithAString*        fMaterCmd;
-    G4UIcmdWithADoubleAndUnit* fSizeCmd;
+    G4UIcmdWithAString*        fDetMaterCmd;
+    G4UIcmdWithAString*        fBackingMaterCmd;
+    G4UIcmdWithAString*        fFilesPathCmd;
+    G4UIcmdWithADoubleAndUnit* fDetThicknessCmd;
+    G4UIcmdWithADoubleAndUnit* fBackingThicknessCmd;
     G4UIcmdWithADoubleAndUnit* fMagFieldCmd;
     G4UIcmdWithoutParameter*   fUpdateCmd;
+    G4UIcmdWithAString*        fBackingPosCmd;
+    G4UIcmdWithADouble*        fTargetPhiCmd;
+    G4UIcmdWithAnInteger*      fReactionTypeCmd;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -1,0 +1,19 @@
+DEfar1.stl 	Silicon 	0	0	0	0	0	0
+DEfar2.stl 	Silicon 	0	0	0	0	0	0
+DEfar3.stl 	Silicon 	0	0	0	0	0	0
+DEfar4.stl 	Silicon 	0	0	0	0	0	0
+Efar1.stl 	Silicon 	0	0	0	0	0	0
+Efar2.stl 	Silicon 	0	0	0	0	0	0
+Efar3.stl 	Silicon 	0	0	0	0	0	0
+Efar4.stl 	Silicon 	0	0	0	0	0	0
+DEnear1.stl 	Silicon 	0	0	0	0	0	0
+DEnear2.stl 	Silicon 	0	0	0	0	0	0
+DEnear3.stl 	Silicon 	0	0	0	0	0	0
+DEnear4.stl 	Silicon 	0	0	0	0	0	0
+Enear1.stl 	Silicon 	0	0	0	0	0	0
+Enear2.stl 	Silicon 	0	0	0	0	0	0
+Enear3.stl 	Silicon 	0	0	0	0	0	0
+Enear4.stl 	Silicon 	0	0	0	0	0	0
+PCB.stl     	FR4 	0	0	0	0	0	0
+target.stl 	CD2	0	0	0	0	0	0
+

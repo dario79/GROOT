@@ -45,18 +45,22 @@
 #include "EventAction.hh"
 #include "SteppingAction.hh"
 
-#ifdef G4VIS_USE
- #include "G4VisExecutive.hh"
-#endif
-
-#ifdef G4UI_USE
 #include "G4UIExecutive.hh"
-#endif
+#include "G4VisExecutive.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
  
 int main(int argc,char** argv) {
+
+#ifdef G4MULTITHREADED
+   G4cout<<"ROOT doesn't like MULTITHREAD"<<G4endl;
+   exit(0);
+#endif
  
+   //detect interactive mode (if no arguments) and define UI session
+  G4UIExecutive* ui = nullptr;
+  if (argc == 1) ui = new G4UIExecutive(argc,argv);
+
   //choose the Random engine
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
 
@@ -76,48 +80,42 @@ int main(int argc,char** argv) {
  long seed = (long) systime;
  CLHEP::HepRandom::setTheSeed(seed);
 */
-  runManager->SetUserAction(prim = new PrimaryGeneratorAction(det));
- 
+
+   runManager->SetUserAction(prim = new PrimaryGeneratorAction(det));
   // set user action classes
   RunAction*   run;
+  EventAction* event;
+  SteppingAction* step;
   
   runManager->SetUserAction(run = new RunAction(det,prim));
-  runManager->SetUserAction(new EventAction());
+  runManager->SetUserAction(event = new EventAction());
 //  runManager->SetUserAction(new TrackingAction());
-  runManager->SetUserAction(new SteppingAction(run));
+  runManager->SetUserAction(step = new SteppingAction(run, event, prim));
+  //runManager->SetUserAction(step = new SteppingAction(run));
+
  
-  // get the pointer to the User Interface manager
-    G4UImanager* UI = G4UImanager::GetUIpointer();  
+  //initialize visualization
+  G4VisManager* visManager = nullptr;
 
-  if (argc!=1)   // batch mode
-    {
-     G4String command = "/control/execute ";
-     G4String fileName = argv[1];
-     UI->ApplyCommand(command+fileName);
-    }
+  //get the pointer to the User Interface manager
+  G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
-  else           //define visualization and UI terminal for interactive mode
-    {
-#ifdef G4VIS_USE
-   G4VisManager* visManager = new G4VisExecutive;
+ if (ui)  {
+   //interactive mode
+   visManager = new G4VisExecutive;
    visManager->Initialize();
-#endif
+   ui->SessionStart();
+   delete ui;
+  }
+  else  {
+   //batch mode
+   G4String command = "/control/execute ";
+   G4String fileName = argv[1];
+   UImanager->ApplyCommand(command+fileName);
+  }
 
-#ifdef G4UI_USE
-      G4UIExecutive * ui = new G4UIExecutive(argc,argv);
-      ui->SessionStart();
-      delete ui;
-#endif
-
-#ifdef G4VIS_USE
-     delete visManager;
-#endif
-    }
-
-  // job termination
-  //
-  delete runManager;
-
+  //job termination
+  delete visManager;
   return 0;
 }
 

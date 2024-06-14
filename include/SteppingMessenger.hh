@@ -23,52 +23,50 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file hadronic/Hadr03/src/GammaPhysics.cc
-/// \brief Implementation of the GammaPhysics class
+/// \file electromagnetic/TestEm1/include/SteppingMessenger.hh
+/// \brief Definition of the SteppingMessenger class
 //
-// $Id: GammaPhysics.cc 66587 2012-12-21 11:06:44Z ihrivnac $
+// $Id: SteppingMessenger.hh 66241 2012-12-13 18:34:42Z gunter $
 //
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#ifndef SteppingMessenger_h
+#define SteppingMessenger_h 1
+
+#include "G4UImessenger.hh"
+#include "globals.hh"
+
+class SteppingAction;
+class G4UIcmdWithAnInteger;
+class G4UIcmdWithADouble;
+class G4UIcmdWithAString;
+class G4UIdirectory;
+class G4UIcmdWithoutParameter;
+class G4UIcmdWithADoubleAndUnit;
+class G4Event;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "GammaPhysics.hh"
-#include "G4BinaryCascade.hh"
-#include "G4ParticleDefinition.hh"
-#include "G4ProcessManager.hh"
-#include "G4PhotoNuclearCrossSection.hh"
-
-
-// Processes
-
-#include "G4HadronInelasticProcess.hh"
-#include "G4CascadeInterface.hh"
-
-#include "G4SystemOfUnits.hh"
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-GammaPhysics::GammaPhysics(const G4String& name)
-:  G4VPhysicsConstructor(name)
-{ }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-GammaPhysics::~GammaPhysics()
-{ }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void GammaPhysics::ConstructProcess()
+class SteppingMessenger: public G4UImessenger
 {
-    G4ProcessManager* pManager = G4Gamma::Gamma()->GetProcessManager();
-    G4HadronInelasticProcess* process = new G4HadronInelasticProcess("photonNuclear", G4Gamma::Definition());
-    process->AddDataSet( new G4PhotoNuclearCrossSection );
+  public:
+    SteppingMessenger(SteppingAction*);
+   ~SteppingMessenger();
 
-    G4CascadeInterface* theCascade = new G4CascadeInterface();
-    theCascade->usePreCompoundDeexcitation();
-    process->RegisterMe(theCascade);
+    virtual void SetNewValue(G4UIcommand*, G4String);
 
-    pManager->AddDiscreteProcess(process);
-}
+  private:
+    SteppingAction* fStepping;
+
+    G4UIdirectory*             fStepDir;
+    G4UIdirectory*             fGrootDir;
+    G4UIcmdWithAString*        fOutputTypeCmd;
+    G4UIcmdWithAString*        fOutputNameCmd;
+    G4UIcmdWithAString*        fTrackCmd;
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif
+

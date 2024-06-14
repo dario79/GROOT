@@ -23,63 +23,88 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file hadronic/Hadr03/src/EventActionMessenger.cc
-/// \brief Implementation of the EventActionMessenger class
+/// \file electromagnetic/Groot1/src/SteppingMessenger.cc
+/// \brief Implementation of the SteppingMessenger class
 //
-// $Id: EventActionMessenger.cc 70759 2013-06-05 12:26:43Z gcosmo $
-// 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+// $Id: SteppingMessenger.cc 67268 2013-02-13 11:38:40Z ihrivnac $
+//
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "EventActionMessenger.hh"
-#include "EventAction.hh"
-
+#include "SteppingMessenger.hh"
 #include "G4UIdirectory.hh"
+#include "SteppingAction.hh"
 #include "G4UIcmdWithAnInteger.hh"
+#include "G4UIcmdWithADouble.hh"
+#include "G4UIcmdWithoutParameter.hh"
+#include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithAString.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-EventActionMessenger::EventActionMessenger(EventAction* EvAct)
-:G4UImessenger(),
- fEventAction(EvAct),fEventDir(0), fPrintCmd(0) , fDrawCmd(0)
-{ 
-  fEventDir = new G4UIdirectory("/testhadr/event/");
-  fEventDir ->SetGuidance("event control");
-
-  fPrintCmd = new G4UIcmdWithAnInteger("/testhadr/event/printModulo",this);
-  fPrintCmd->SetGuidance("Print events modulo n");
-  fPrintCmd->SetParameterName("EventNb",false);
-  fPrintCmd->SetRange("EventNb>0");
-  fPrintCmd->AvailableForStates(G4State_Idle); 
-
-  fDrawCmd = new G4UIcmdWithAString("/testhadr/DrawTracks", this);
-  fDrawCmd->SetGuidance("Draw the tracks in the event");
-  fDrawCmd->SetGuidance("  Choice : neutral, charged, all");
-  fDrawCmd->SetParameterName("choice",true);
-  fDrawCmd->SetDefaultValue("all");
-  fDrawCmd->SetCandidates("none charged all");
-  fDrawCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-EventActionMessenger::~EventActionMessenger()
+SteppingMessenger::SteppingMessenger( SteppingAction* Step)
+:G4UImessenger(),fStepping(Step),
+ fStepDir(0),
+ fGrootDir(0),
+ fOutputTypeCmd(0),
+ fOutputNameCmd(0),
+ fTrackCmd(0)
 {
-  delete fPrintCmd;
-  delete fEventDir;   
-  delete fDrawCmd;
+    fGrootDir = new G4UIdirectory("/groot/");
+    fGrootDir->SetGuidance("commands specific to this example");
+
+    fStepDir = new G4UIdirectory("/groot/analysis/");
+    fStepDir->SetGuidance("gun control");
+
+    fOutputTypeCmd = new G4UIcmdWithAString("/groot/analysis/outputType",this);
+    fOutputTypeCmd->SetGuidance("Select the type of the output");
+    fOutputTypeCmd->SetParameterName("choice",false);
+    fOutputTypeCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+    fOutputNameCmd = new G4UIcmdWithAString("/groot/analysis/outputName",this);
+    fOutputNameCmd->SetGuidance("Select the name of the output");
+    fOutputNameCmd->SetParameterName("choice",false);
+    fOutputNameCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+    fTrackCmd = new G4UIcmdWithAString("/groot/track",this);
+    fTrackCmd->SetGuidance("Select if you want the track");
+    fTrackCmd->SetParameterName("choice",false);
+    fTrackCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void EventActionMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
-{ 
-  if(command == fDrawCmd)
-    {fEventAction->SetDrawFlag(newValue);}
+SteppingMessenger::~SteppingMessenger()
+{
+    delete fStepDir;
+    delete fOutputTypeCmd;
+    delete fOutputNameCmd;
+    delete fTrackCmd;
 
-  if (command == fPrintCmd)
-    {fEventAction->SetPrintModulo(fPrintCmd->GetNewIntValue(newValue));}
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void SteppingMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
+{
+
+    if(command == fOutputTypeCmd)
+    {
+        fStepping->SelectOutputType(newValue);
+    }
+
+    if(command == fOutputNameCmd)
+    {
+        fStepping->SelectOutputName(newValue);
+    }
+
+    if(command == fTrackCmd)
+    {
+        fStepping->SelectTrack(newValue);
+    }
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
