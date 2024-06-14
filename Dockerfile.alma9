@@ -18,4 +18,5 @@ RUN dnf install gcc \
     avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
     libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
     git \
+    dbus dbus-x11 \
     nano -y

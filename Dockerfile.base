@@ -1,4 +1,4 @@
-FROM alexo91/alma9-base:latest
+FROM alexo91/alma9:latest
 
 ENV GEANT4_VERSION 11.2.1 
 #maybe set this in the docker-compose file
@@ -43,8 +43,20 @@ RUN mkdir -p /opt/root/ \
 
 #--------------------------------------------------
 
-FROM alexo91/alma9-base:latest
+FROM alexo91/alma9:latest
 
-COPY --from=0 /opt/geant4/install /opt/geant4/
-COPY --from=0 /opt/geant4/data /opt/geant4/data
-COPY --from=0 /opt/root/install /opt/root/
+RUN groupadd --gid 1001 groot && \
+    useradd --uid 1001 --gid 1001 groot
+
+USER groot
+RUN mkdir -p /home/groot/
+
+COPY --from=0 --chown=groot:groot /opt/geant4/install /opt/geant4/
+COPY --from=0 --chown=groot:groot /opt/geant4/data /opt/geant4/data
+COPY --from=0 --chown=groot:groot /opt/root/install /opt/root/
+COPY --chown=groot:groot ./entrypoint-base.sh /entrypoint.sh
+
+WORKDIR /home/groot/
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
