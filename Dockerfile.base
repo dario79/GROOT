@@ -45,5 +45,5 @@ RUN mkdir -p /opt/root/ \
 
 FROM alexo91/alma9-base:latest
 
-COPY --from=builder0 /opt/geant4/install /opt/geant4/
-COPY --from=builder0 /opt/root/install /opt/root/
+COPY --from=0 /opt/geant4/install /opt/geant4/
+COPY --from=0 /opt/root/install /opt/root/
