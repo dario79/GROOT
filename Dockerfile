@@ -17,14 +17,14 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
         -DGEANT4_INSTALL_DATA=ON \
         -DGEANT4_INSTALL_DATADIR=/opt/geant4/data \
         -DGEANT4_BUILD_MULTITHREADED=OFF \
-        -DGEANT4_INSTALL_EXAMPLES=OFF \#RUN cd /opt/GROOT/build \
-        #    && cmake \
-        #        -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
-        #        -DBUILD_STATIC_LIBS=ON \
-        #        -DBUILD_SHARED_LIBS=OFF \
-        #        ../source \
-        #    && make -j$(nproc) \
-        #    && make install
+        -DGEANT4_INSTALL_EXAMPLES=OFF \
+        -DGEANT4_USE_SYSTEM_EXPAT=OFF \
+        -DBUILD_STATIC_LIBS=ON \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DGEANT4_USE_OPENGL_X11=ON \
+        -DGEANT4_USE_GDML=ON \
+        -DGEANT4_USE_QT=ON \
+        ../src/geant4-v${GEANT4_VERSION} \
     && make -j$(nproc) \
     && make install
 
