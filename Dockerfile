@@ -1,4 +1,5 @@
-FROM almalinux:latest
+FROM almalinux:latest as builder0
+LABEL stage="builder"
 
 RUN dnf install epel-release -y \
     && dnf config-manager --set-enabled crb \
@@ -66,6 +67,13 @@ RUN mkdir -p /opt/root/ \
 #RUN /bin/bash -c "source /opt/root/install/bin/thisroot.sh"
 #RUN /bin/bash -c "geant4-config --cflags"
 #RUN root-config --cflags
+
+FROM almalinux:latest
+
+SHELL ["/bin/bash", "-c"]
+
+COPY --from=builder0 /opt/geant4/install /opt/geant4/
+COPY --from=builder0 /opt/root/install /opt/root/
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
