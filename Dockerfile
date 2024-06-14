@@ -1,6 +1,8 @@
 FROM alexo91/groot-soil:latest as builder0
 LABEL stage="builder"
 
+USER root
+
 #compile and install GROOT
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
@@ -16,7 +18,7 @@ RUN "/opt/GROOT/source/build-GROOT.sh"
 
 FROM alexo91/groot-soil:latest
 
-COPY --from=builder0 --chown=groot:groot /home/groot/GROOT/install /home/groot/GROOT/
+COPY --from=builder0 --chown=groot:groot /opt/GROOT/install /opt/GROOT/
 COPY --chown=groot:groot ./entrypoint.sh /
 
 
