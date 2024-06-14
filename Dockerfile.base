@@ -46,7 +46,7 @@ RUN mkdir -p /opt/root/ \
 FROM alexo91/alma9:latest
 
 RUN groupadd --gid 1001 groot && \
-    useradd --uid 1001 --gid 1001 groot
+    useradd --create-home --no-log-init --uid 1001 --gid 1001 groot
 
 USER groot
 RUN mkdir -p /home/groot/
