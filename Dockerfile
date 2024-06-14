@@ -62,6 +62,9 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
+RUN source /opt/geant4/install/bin/geant4.sh
+RUN source /opt/root/install/bin/thisroot.sh
+
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
     && mkdir /opt/GROOT/install 
