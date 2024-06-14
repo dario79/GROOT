@@ -36,8 +36,8 @@ RUN chown -R groot:groot /opt && \
 USER groot
 
 RUN mkdir -p /home/groot/
-WORKDIR /home/groot/
+COPY --chown=groot:groot ./entrypoint.sh /home/groot/
 
-COPY ./entrypoint.sh .
+WORKDIR /home/groot/
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
