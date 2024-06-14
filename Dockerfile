@@ -45,7 +45,7 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
         -DBUILD_SHARED_LIBS=OFF \
         -DGEANT4_USE_OPENGL_X11=ON \
         -DGEANT4_USE_GDML=ON \
-        -DGEANT4_USE_QT=ON \/opt/GROOT/source/build-GROOT.sh
+        -DGEANT4_USE_QT=ON \
         ../src/geant4-v${GEANT4_VERSION} \
     && make -j$(nproc) \
     && make install
