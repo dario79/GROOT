@@ -37,10 +37,11 @@ RUN mkdir -p /opt/root/ \
     && cd /opt/root/build \
     && cmake \
         -DCMAKE_INSTALL_PREFIX=/opt/root/install \
-        -DBUILD_STATIC_LIBS=Oalmalinux:latestN \
+        -DBUILD_STATIC_LIBS=ON \
         -DBUILD_SHARED_LIBS=OFF \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
+
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
