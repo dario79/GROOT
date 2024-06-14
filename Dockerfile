@@ -22,6 +22,6 @@ COPY --from=builder0 --chown=groot:groot /opt/GROOT/install /opt/GROOT/
 COPY --chown=groot:groot ./entrypoint.sh /
 
 
-RUN chmod +x ./entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["GROOT"]
