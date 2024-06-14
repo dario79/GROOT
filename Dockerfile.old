@@ -89,6 +89,31 @@ RUN "/opt/GROOT/source/build-GROOT.sh"
 #    && make -j$(nproc) \
 #    && make install
 
-#COPY ./entrypoint.sh /
-#RUN chmod +x /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
+FROM almalinux:latest
+
+COPY --from=builder0 /opt/geant4/install /opt/geant4/
+COPY --from=builder0 /opt/root/install /opt/root/
+COPY --from=builder0 /opt/GROOT/install /opt/GROOT/
+
+RUN dnf install epel-release -y \
+    && dnf config-manager --set-enabled crb \
+    && dnf update -y\
+    && dnf install gcc \
+        make \
+        cmake \
+        wget \
+        xerces-c-devel \
+        qt5-devel \
+        binutils \
+        libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
+        xrootd-client-devel xrootd-libs-devel \
+        mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
+        fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
+        avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
+        libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
+        git \
+        nano -y
+
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
