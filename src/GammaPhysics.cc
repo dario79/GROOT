@@ -35,6 +35,8 @@
 #include "G4BinaryCascade.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ProcessManager.hh"
+#include "G4PhotoNuclearCrossSection.hh"
+
 
 // Processes
 
