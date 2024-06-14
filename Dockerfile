@@ -1,5 +1,6 @@
 FROM almalinux:latest as builder0
 LABEL stage="builder"
+SHELL ["/bin/bash", "-c"]
 
 RUN dnf install epel-release -y \
     && dnf config-manager --set-enabled crb \
@@ -44,7 +45,7 @@ RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v${GEANT4_VERSION}/geant
         -DBUILD_SHARED_LIBS=OFF \
         -DGEANT4_USE_OPENGL_X11=ON \
         -DGEANT4_USE_GDML=ON \
-        -DGEANT4_USE_QT=ON \
+        -DGEANT4_USE_QT=ON \/opt/GROOT/source/build-GROOT.sh
         ../src/geant4-v${GEANT4_VERSION} \
     && make -j$(nproc) \
     && make install
@@ -63,17 +64,11 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
-#RUN /bin/bash -c "source /opt/geant4/install/bin/geant4.sh"
-#RUN /bin/bash -c "source /opt/root/install/bin/thisroot.sh"
-#RUN /bin/bash -c "geant4-config --cflags"
-#RUN root-config --cflags
+RUN source /opt/geant4/install/bin/geant4.sh \
+    && source /opt/root/install/bin/thisroot.sh \
+    && geant4-config --cflags \
+    && root-config --cflags
 
-FROM almalinux:latest
-
-SHELL ["/bin/bash", "-c"]
-
-COPY --from=builder0 /opt/geant4/install /opt/geant4/
-COPY --from=builder0 /opt/root/install /opt/root/
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
@@ -88,12 +83,9 @@ COPY ./src/ /opt/GROOT/source/src/
 COPY ./include/ /opt/GROOT/source/include/
 COPY ./cmake/ /opt/GROOT/source/cmake/
 COPY ./build-GROOT.sh /opt/GROOT/source/
-COPY ./entrypoint.sh /
 
-
-RUN chmod +x /entrypoint.sh
 RUN chmod +x /opt/GROOT/source/build-GROOT.sh
-#RUN "/opt/GROOT/source/build-GROOT.sh"
+RUN "/opt/GROOT/source/build-GROOT.sh"
 
 #RUN cd /opt/GROOT/build \
 #    && cmake \
@@ -104,4 +96,6 @@ RUN chmod +x /opt/GROOT/source/build-GROOT.sh
 #    && make -j$(nproc) \
 #    && make install
 
-ENTRYPOINT ["/entrypoint.sh"]
+#COPY ./entrypoint.sh /
+#RUN chmod +x /entrypoint.sh
+#ENTRYPOINT ["/entrypoint.sh"]
