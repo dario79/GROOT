@@ -1,15 +1,3 @@
-$Id: README Dario $
+# GROOT
 
-  
-download and compile cadmesh
-
-
-add in CMakeLists.txt
-# CADMesh
-find_package(cadmesh)
-include_directories(${CADMESH_INCLUDE_DIRS})
-
-cmake ../ -Dcadmesh_DIR:PATH=path_to_cadmesh  ( probably /usr/local )
-
-
-make
+GROOT makes use of the validated tracking GEANT4 libraries and the n-body event generator of ROOT in order to provide a fast, realiable and complete simulation tool to be used for nuclear physics experiments.
