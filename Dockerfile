@@ -27,6 +27,17 @@ FROM alexo91/alma9g4r-base:latest
 
 COPY --from=builder0 /opt/GROOT/install /opt/GROOT/
 
-COPY ./entrypoint.sh /
+RUN dnf install -y dbus dbus-x11
+
+RUN addgroup -g 1001 groot && \
+    adduser -S -u 1001 -G groot groot
+RUN chown -R groot:groot /opt && \
+    chmod 755 -R /opt
+USER groot
+
+RUN mkdir -p /home/groot/
+WORKDIR /home/groot/
+
+COPY ./entrypoint.sh .
 RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
