@@ -39,5 +39,5 @@ RUN mkdir -p /home/groot/
 WORKDIR /home/groot/
 
 COPY ./entrypoint.sh .
-RUN chmod +x /entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
