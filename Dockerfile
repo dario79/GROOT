@@ -68,6 +68,9 @@ RUN mkdir -p /opt/GROOT/source \
 
 COPY ./GROOT.cc /opt/GROOT/source/
 COPY ./CMakeLists.txt /opt/GROOT/source/
+COPY ./inputFileDetectors.txt /opt/GROOT/source/
+COPY ./run.mac /opt/GROOT/source/
+COPY ./vis.mac /opt/GROOT/source/
 COPY ./src/ /opt/GROOT/source/src/
 COPY ./include/ /opt/GROOT/source/include/
 COPY ./cmake/ /opt/GROOT/source/cmake/
