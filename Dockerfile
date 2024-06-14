@@ -68,9 +68,9 @@ RUN mkdir -p /opt/GROOT/source \
 
 COPY ./GROOT.cc /opt/GROOT/source/
 COPY ./CMakeLists.txt /opt/GROOT/source/
-COPY ./src /opt/GROOT/source/src/
-COPY ./include /opt/GROOT/source/include/
-COPY ./cmake /opt/GROOT/source/cmake/
+COPY ./src/ /opt/GROOT/source/src/
+COPY ./include/ /opt/GROOT/source/include/
+COPY ./cmake/ /opt/GROOT/source/cmake/
 
 RUN cd /opt/GROOT/build \
     && cmake \
