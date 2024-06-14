@@ -82,6 +82,8 @@ COPY ./cmake/ /opt/GROOT/source/cmake/
 COPY ./build-GROOT.sh /opt/GROOT/source/
 COPY ./entrypoint.sh /
 
+
+RUN chmod +x /entrypoint.sh
 RUN chmod +x /opt/GROOT/source/build-GROOT.sh
 RUN "/opt/GROOT/source/build-GROOT.sh"
 
