@@ -41,7 +41,7 @@ find_package(ROOT REQUIRED)
 #----------------------------------------------------------------------------
 # Find CLHEP
 #
-find_package(CLHEP REQUIRED)
+#find_package(CLHEP REQUIRED)
 #
 #--------------------------------------------
 # Locate sources and headers for this project
