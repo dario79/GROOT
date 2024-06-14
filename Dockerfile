@@ -80,6 +80,7 @@ COPY ./src/ /opt/GROOT/source/src/
 COPY ./include/ /opt/GROOT/source/include/
 COPY ./cmake/ /opt/GROOT/source/cmake/
 COPY ./build-GROOT.sh /opt/GROOT/source/
+COPY ./entrypoint.sh /
 
 RUN chmod +x /opt/GROOT/source/build-GROOT.sh
 RUN "/opt/GROOT/source/build-GROOT.sh"
@@ -92,3 +93,5 @@ RUN "/opt/GROOT/source/build-GROOT.sh"
 #        ../source \
 #    && make -j$(nproc) \
 #    && make install
+
+ENTRYPOINT ["/entrypoint.sh"]
