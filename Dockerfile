@@ -64,9 +64,9 @@ RUN mkdir -p /opt/root/ \
 
 SHELL ["/bin/bash", "-c"] 
 
-RUN . /opt/geant4/install/bin/geant4.sh
-RUN . /opt/root/install/bin/thisroot.sh
-RUN geant4-config --cflags
+RUN /bin/bash -c "source /opt/geant4/install/bin/geant4.sh"
+RUN /bin/bash -c "source /opt/root/install/bin/thisroot.sh"
+RUN /bin/bash -c "geant4-config --cflags"
 RUN root-config --cflags
 
 RUN mkdir -p /opt/GROOT/source \
