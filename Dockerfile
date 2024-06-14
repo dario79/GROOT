@@ -62,10 +62,10 @@ RUN mkdir -p /opt/root/ \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
 
-RUN /bin/bash -c "source /opt/geant4/install/bin/geant4.sh"
-RUN /bin/bash -c "source /opt/root/install/bin/thisroot.sh"
-RUN /bin/bash -c "geant4-config --cflags"
-RUN root-config --cflags
+#RUN /bin/bash -c "source /opt/geant4/install/bin/geant4.sh"
+#RUN /bin/bash -c "source /opt/root/install/bin/thisroot.sh"
+#RUN /bin/bash -c "geant4-config --cflags"
+#RUN root-config --cflags
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
@@ -79,12 +79,16 @@ COPY ./vis.mac /opt/GROOT/source/
 COPY ./src/ /opt/GROOT/source/src/
 COPY ./include/ /opt/GROOT/source/include/
 COPY ./cmake/ /opt/GROOT/source/cmake/
+COPY ./build-GROOT.sh /opt/GROOT/source/
 
-RUN cd /opt/GROOT/build \
-    && cmake \
-        -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
-        -DBUILD_STATIC_LIBS=ON \
-        -DBUILD_SHARED_LIBS=OFF \
-        ../source \
-    && make -j$(nproc) \
-    && make install
+RUN chmod +x /opt/GROOT/source/build-GROOT.sh
+RUN "/opt/GROOT/source/build-GROOT.sh"
+
+#RUN cd /opt/GROOT/build \
+#    && cmake \
+#        -DCMAKE_INSTALL_PREFIX=/opt/GROOT/install \
+#        -DBUILD_STATIC_LIBS=ON \
+#        -DBUILD_SHARED_LIBS=OFF \
+#        ../source \
+#    && make -j$(nproc) \
+#    && make install
