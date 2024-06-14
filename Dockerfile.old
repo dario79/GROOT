@@ -1,6 +1,5 @@
 FROM almalinux:latest as builder0
 LABEL stage="builder"
-SHELL ["/bin/bash", "-c"]
 
 RUN dnf install epel-release -y \
     && dnf config-manager --set-enabled crb \
@@ -63,12 +62,6 @@ RUN mkdir -p /opt/root/ \
         -DBUILD_SHARED_LIBS=OFF \
         ../src \
     && cmake --build . --target install -- -j$(nproc)
-
-RUN source /opt/geant4/install/bin/geant4.sh \
-    && source /opt/root/install/bin/thisroot.sh \
-    && geant4-config --cflags \
-    && root-config --cflags
-
 
 RUN mkdir -p /opt/GROOT/source \
     && mkdir /opt/GROOT/build \
