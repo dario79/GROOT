@@ -72,10 +72,10 @@ RUN groupadd --gid 1001 groot && \
 USER groot
 RUN mkdir -p /home/groot/
 
-COPY --from=0 --chown=groot:groot /opt/geant4/install /opt/geant4/
-COPY --from=0 --chown=groot:groot /opt/geant4/data /opt/geant4/data
-COPY --from=0 --chown=groot:groot /opt/root/install /opt/root/
-COPY --chown=groot:groot ./entrypoint-base.sh /entrypoint.sh
+COPY --from=0 --chown=groot:groot --chmod=755 /opt/geant4/install /opt/geant4/
+COPY --from=0 --chown=groot:groot --chmod=755 /opt/geant4/data /opt/geant4/data
+COPY --from=0 --chown=groot:groot --chmod=755 /opt/root/install /opt/root/
+COPY --chown=groot:groot --chmod=755 ./entrypoint-base.sh /entrypoint.sh
 
 WORKDIR /home/groot/
 
