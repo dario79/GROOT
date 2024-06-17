@@ -4,7 +4,7 @@ LABEL stage="builder"
 RUN apt update -y \
     && apt install -y wget binutils cmake dpkg-dev g++ gcc git \
     openssl ca-certificates qtbase5-dev libqt5opengl5-dev libxmu-dev \
-    libgl1-mesa-glx qt3d5-dev libxerces-c-dev qt5-default \
+    libgl1-mesa-dev qt3d5-dev libxerces-c-dev qtbase5-dev \
     libssl-dev git libx11-dev \
     libxext-dev libxft-dev libxpm-dev python3 libtbb-dev \
     gfortran libpcre3-dev \
