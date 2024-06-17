@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 LABEL stage="builder"
 
 RUN apt update -y \
-    && apt install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
+    && apt install -y wget binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev \
     libxext-dev libxft-dev libxpm-dev python3 libtbb-dev \
     gfortran libpcre3-dev \
     libglu1-mesa-dev libglew-dev libftgl-dev \
