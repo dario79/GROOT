@@ -18,8 +18,8 @@ RUN "/opt/GROOT/source/build-GROOT.sh"
 
 FROM alexo91/groot-soil:ubuntu
 
-COPY --from=builder0 --chown=groot:groot /opt/GROOT/install /opt/GROOT/
-COPY --chown=groot:groot ./entrypoint.sh /
+COPY --from=builder0 --chown=groot:groot --chmod=755 /opt/GROOT/install /opt/GROOT/
+COPY --chown=groot:groot --chmod=755 ./entrypoint.sh /
 
 
 RUN chmod +x /entrypoint.sh
