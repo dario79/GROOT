@@ -1,4 +1,24 @@
-FROM alexo91/alma9:latest
+FROM almalinux:latest
+
+RUN dnf install epel-release -y \
+    && dnf config-manager --set-enabled crb \
+    && dnf update -y \
+    && dnf install gcc \
+    make \
+    cmake \
+    wget \
+    xerces-c-devel \
+    qt5-devel \
+    binutils \
+    libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
+    xrootd-client-devel xrootd-libs-devel \
+    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
+    fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
+    avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
+    libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
+    git \
+    dbus dbus-x11 \
+    nano -y
 
 ENV GEANT4_VERSION 11.2.1 
 #maybe set this in the docker-compose file
@@ -43,7 +63,27 @@ RUN mkdir -p /opt/root/ \
 
 #--------------------------------------------------
 
-FROM alexo91/alma9:latest
+FROM almalinux:latest
+
+RUN dnf install epel-release -y \
+    && dnf config-manager --set-enabled crb \
+    && dnf update -y \
+    && dnf install gcc \
+    make \
+    cmake \
+    wget \
+    xerces-c-devel \
+    qt5-devel \
+    binutils \
+    libX11-devel libXpm-devel libXmu-devel libXft-devel libXext-devel python openssl-devel \
+    xrootd-client-devel xrootd-libs-devel \
+    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel \
+    fftw-devel cfitsio-devel graphviz-devel libuuid-devel \
+    avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy \
+    libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel \
+    git \
+    dbus dbus-x11 \
+    nano -y
 
 RUN groupadd --gid 1001 groot && \
     useradd --create-home --no-log-init --uid 1001 --gid 1001 groot

@@ -2,9 +2,8 @@ FROM almalinux:latest
 
 RUN dnf install epel-release -y \
     && dnf config-manager --set-enabled crb \
-    && dnf update -y
-
-RUN dnf install gcc \
+    && dnf update -y \
+    && dnf install gcc \
     make \
     cmake \
     wget \
