@@ -55,7 +55,7 @@ After installing distrobox create the desider container with:
 ```
 $ distrobox create -n groot -i docker.io/alexo91/groot:XXXX
 ```
-Replace `XXXX' with either `ubuntu` or `almalinux` tag to choose your preferred version. If in doubt we suggest you to use the ubuntu version.
+Replace `XXXX` with either `ubuntu` or `almalinux` tag to choose your preferred version. If in doubt we suggest you to use the ubuntu version.
 If you need root permission add `--root` at the end of the command.
 
 Then to enter the container simply run:
